@@ -4,6 +4,7 @@ const scoreElement = document.getElementById('score');
 
 let score = 0;
 let isGameOver = false;
+let animationId; // Переменная для контроля цикла
 
 const player = {
     x: canvas.width / 2,
@@ -15,17 +16,14 @@ const player = {
 let bullets = [];
 let enemies = [];
 
-// Управление
 canvas.addEventListener('mousemove', (e) => {
-    if (isGameOver) return; // Если игра окончена, не двигаемся
+    if (isGameOver) return;
     const rect = canvas.getBoundingClientRect();
     player.x = e.clientX - rect.left - player.size / 2;
 });
 
-// Стрельба
 canvas.addEventListener('mousedown', () => {
     if (isGameOver) {
-        // Перезапуск игры при клике после проигрыша
         restartGame();
         return;
     }
@@ -47,7 +45,7 @@ function spawnEnemy() {
         color: '#ff4444',
         speed: 2 + Math.random() * 2
     });
-    // Случайное время до следующего врага (от 0.5 до 1.5 сек)
+    
     setTimeout(spawnEnemy, 500 + Math.random() * 1000);
 }
 
@@ -57,8 +55,11 @@ function restartGame() {
     enemies = [];
     bullets = [];
     scoreElement.innerText = score;
+    
+    cancelAnimationFrame(animationId);
+    
     spawnEnemy();
-    gameLoop();
+    draw(); 
 }
 
 function update() {
@@ -72,12 +73,10 @@ function update() {
     enemies.forEach((enemy, eIndex) => {
         enemy.y += enemy.speed;
 
-        // 1. Проверка: Враг дошел до низа
         if (enemy.y + enemy.size > canvas.height) {
             isGameOver = true;
         }
 
-        // 2. Проверка: Враг коснулся игрока
         if (enemy.x < player.x + player.size &&
             enemy.x + enemy.size > player.x &&
             enemy.y < player.y + player.size &&
@@ -85,7 +84,6 @@ function update() {
             isGameOver = true;
         }
 
-        // Столкновение пули с врагом
         bullets.forEach((bullet, bIndex) => {
             if (bullet.x < enemy.x + enemy.size &&
                 bullet.x + bullet.width > enemy.x &&
@@ -121,17 +119,18 @@ function draw() {
         ctx.fillStyle = 'white';
         ctx.font = '48px Arial';
         ctx.textAlign = 'center';
-        ctx.fillText('game over', canvas.width / 2, canvas.height / 2);
+        ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2);
         
         ctx.font = '24px Arial';
-        ctx.fillText('mouseclick to restart', canvas.width / 2, canvas.height / 2 + 50);
-        return; // Останавливаем цикл отрисовки
+        ctx.fillText('Click to restart', canvas.width / 2, canvas.height / 2 + 50);
+        
+        return; 
     }
 
     update();
-    requestAnimationFrame(draw);
+    // Сохраняем ID анимации, чтобы можно было управлять циклом
+    animationId = requestAnimationFrame(draw);
 }
 
-// Запуск
 spawnEnemy();
 draw();
