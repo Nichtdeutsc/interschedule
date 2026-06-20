@@ -1,17 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Интерактивная карта лицея</title>
     <style>
-        body { margin: 0; background: #222; color: white; font-family: sans-serif; overflow: hidden; display: flex; flex-direction: column; align-items: center; }
-        canvas { background: #111; border: 2px solid #444; cursor: crosshair; }
-        .ui { margin-bottom: 10px; font-size: 24px; }
+        body { font-family: sans-serif; text-align: center; background: #f0f2f5; }
+        #map-container { margin: 20px auto; width: 600px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        /* Стили для кабинетов на карте */
+        .room { fill: #a3e635; stroke: #334155; stroke-width: 2; cursor: pointer; transition: fill 0.3s; }
+        .room:hover { fill: #cbd5e1; }
+        #info-box { margin-top: 20px; padding: 15px; background: #e2e8f0; border-radius: 6px; display: inline-block; min-width: 300px; }
     </style>
 </head>
 <body>
-    <div class="ui">points idk: <span id="score">0</span></div>
-    <canvas id="gameCanvas" width="800" height="600"></canvas>
-    <script src="script.js"></script>
+
+    <h1>Интерактивная карта лицея</h1>
+    <p>Нажми на кабинет, чтобы узнать расписание</p>
+
+    <div id="map-container">
+        <svg width="500" height="200" viewBox="0 0 500 200">
+            <rect id="room-301" class="room" x="50" y="50" width="150" height="100" />
+            <text x="125" y="105" text-anchor="middle" font-weight="bold">301</text>
+
+            <rect id="room-302" class="room" x="300" y="50" width="150" height="100" />
+            <text x="375" y="105" text-anchor="middle" font-weight="bold">302</text>
+        </svg>
+    </div>
+
+    <div id="info-box">
+        <h3 id="room-title">Выберите кабинет</h3>
+        <p id="room-status"></p>
+    </div>
+
+    <script>
+        // Функция, которая будет загружать JSON и обрабатывать клики
+        async function initMap() {
+            // Загружаем данные из файла data.json
+            const response = await fetch('data.json');
+            const data = await response.json();
+
+            // Находим все кабинеты на карте
+            const rooms = document.querySelectorAll('.room');
+            
+            rooms.forEach(room => {
+                room.addEventListener('click', () => {
+                    const roomId = room.id; // Получаем id (например, "room-301")
+                    
+                    // Ищем информацию о кабинете в массиве rooms
+                    const roomInfo = data.rooms.find(r => r.id === roomId);
+                    // Ищем расписание для этого кабинета
+                    const scheduleInfo = data.schedule.find(s => s.room_id === roomId);
+
+                    if (roomInfo) {
+                        document.getElementById('room-title').innerText = `Кабинет №${roomInfo.number} (${roomInfo.description})`;
+                        if (scheduleInfo) {
+                            document.getElementById('room-status').innerText = `Сейчас идет: ${scheduleInfo.subject} у класса ${scheduleInfo.group_name}`;
+                        } else {
+                            document.getElementById('room-status').innerText = "Сейчас этот кабинет пустует.";
+                        }
+                    }
+                });
+            });
+        }
+
+        // Запускаем логику при загрузке страницы
+        initMap();
+    </script>
 </body>
 </html>
