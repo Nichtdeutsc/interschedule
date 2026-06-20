@@ -1,0 +1,10 @@
+{
+  "rooms": [
+    { "id": "room-301", "number": "301", "description": "Информатика" },
+    { "id": "room-302", "number": "302", "description": "Физика" }
+  ],
+  "schedule": [
+    { "room_id": "room-301", "subject": "Спортивное программирование", "group_name": "8 Л" },
+    { "room_id": "room-302", "subject": "Квантовая физика", "group_name": "11 А" }
+  ]
+}
