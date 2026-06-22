@@ -1,10 +1,46 @@
 {
+  "time_slots": [
+    { "slot": 1, "start": "08:30", "end": "09:10" },
+    { "slot": 2, "start": "09:20", "end": "10:00" },
+    { "slot": 3, "start": "10:30", "end": "11:10" },
+    { "slot": 4, "start": "11:20", "end": "12:00" },
+    { "slot": 5, "start": "12:10", "end": "12:50" },
+    { "slot": 6, "start": "13:40", "end": "14:20" },
+    { "slot": 7, "start": "14:30", "end": "15:10" },
+    { "slot": 8, "start": "15:20", "end": "16:00" }
+  ],
   "rooms": [
-    { "id": "room-301", "number": "301", "description": "Информатика" },
-    { "id": "room-302", "number": "302", "description": "Физика" }
+    { "id": "room-317", "number": "317", "description": "Кабинет 8А" },
+    { "id": "room-304", "number": "304", "description": "Английский язык" },
+    { "id": "room-308", "number": "308", "description": "Информатика" },
+    { "id": "room-313", "number": "313", "description": "Турецкий язык" },
+    { "id": "room-207", "number": "207", "description": "Кабинет Физики" },
+    { "id": "room-210", "number": "210", "description": "Кабинет Химии" },
+    { "id": "room-sz", "number": "SZ", "description": "Спортзал" }
   ],
   "schedule": [
-    { "room_id": "room-301", "subject": "Спортивное программирование", "group_name": "8 Л" },
-    { "room_id": "room-302", "subject": "Квантовая физика", "group_name": "11 А" }
-  ]
+    { "day": "Пн", "slot": 1, "class_name": "8А", "group": "all", "subject": "Сын. сағаты", "room_id": "room-317", "teacher": "Дана А." },
+    { "day": "Пн", "slot": 2, "class_name": "8А", "group": "1 группа", "subject": "Алгебра (STEM)", "room_id": "room-317", "teacher": "Нурболат Т." },
+    { "day": "Пн", "slot": 2, "class_name": "8А", "group": "2 группа", "subject": "Информатика", "room_id": "room-308", "teacher": "Биржан А." },
+    { "day": "Пн", "slot": 3, "class_name": "8А", "group": "1 группа", "subject": "Ағылшын т.", "room_id": "room-304", "teacher": "Айжан М." },
+    { "day": "Пн", "slot": 3, "class_name": "8А", "group": "2 группа", "subject": "Ағылшын т.", "room_id": "room-313", "teacher": "Елжас Н." },
+    { "day": "Пн", "slot": 4, "class_name": "8А", "group": "1 группа", "subject": "Ағылшын т.", "room_id": "room-304", "teacher": "Айжан М." },
+    { "day": "Пн", "slot": 4, "class_name": "8А", "group": "2 группа", "subject": "Ағылшын т.", "room_id": "room-313", "teacher": "Елжас Н." },
+    { "day": "Пн", "slot": 5, "class_name": "8А", "group": "all", "subject": "Көркем еңбек", "room_id": "room-317", "teacher": "Тәңірберген А." },
+    { "day": "Пн", "slot": 6, "class_name": "8А", "group": "all", "subject": "Қазақ тілі", "room_id": "room-310", "teacher": "Гульзинат Е." },
+    { "day": "Пн", "slot": 7, "class_name": "8А", "group": "all", "subject": "Түрік тілі", "room_id": "room-313", "teacher": "Эрол Т." },
+    
+    { "day": "Вт", "slot": 1, "class_name": "8А", "group": "all", "subject": "Орыс тілі", "room_id": "room-310", "teacher": "Саулеш Т." },
+    { "day": "Вт", "slot": 2, "class_name": "8А", "group": "all", "subject": "Орыс тілі", "room_id": "room-310", "teacher": "Саулеш Т." },
+    { "day": "Вт", "slot": 3, "class_name": "8А", "group": "all", "subject": "Дене шынықтыру", "room_id": "room-sz", "teacher": "Қайрат Х." },
+    { "day": "Вт", "slot": 4, "class_name": "8А", "group": "all", "subject": "Дене шынықтыру", "room_id": "room-sz", "teacher": "Қайрат Х." },
+    { "day": "Вт", "slot": 5, "class_name": "8А", "group": "1 группа", "subject": "Алгебра (STEM)", "room_id": "room-317", "teacher": "Нурболат Т." },
+    { "day": "Вт", "slot": 5, "class_name": "8А", "group": "2 группа", "subject": "Физика", "room_id": "room-207", "teacher": "Аян Т." },
+    { "day": "Вт", "slot": 6, "class_name": "8А", "group": "1 группа", "subject": "Алгебра (STEM)", "room_id": "room-317", "teacher": "Нурболат Т." },
+    { "day": "Вт", "slot": 6, "class_name": "8А", "group": "2 группа", "subject": "Физика", "room_id": "room-207", "teacher": "Аян Т." },
+    { "day": "Вт", "slot": 7, "class_name": "8А", "group": "1 группа", "subject": "Ағылшын т.", "room_id": "room-304", "teacher": "Айжан М." },
+    { "day": "Вт", "slot": 7, "class_name": "8А", "group": "2 группа", "subject": "English PET", "room_id": "room-210", "teacher": "Елжас Н." }
+  ],
+  "teachers": [],
+  "students": []
 }
