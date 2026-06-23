@@ -21,7 +21,7 @@
         .content-section.active { display: block; }
 
         .header-container { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-        h1 { font-size: 28px; color: #1e293b; }
+        h1 { font-size: 28px; color: #1e293b; margin-bottom: 20px; }
 
         .class-selector { padding: 10px 20px; font-size: 16px; font-weight: bold; border-radius: 6px; border: 2px solid #cbd5e1; background: white; color: #1e293b; cursor: pointer; outline: none; }
 
@@ -56,12 +56,23 @@
         .status-free { background: #e0f2fe; color: #0369a1; }
         .status-busy { background: #fee2e2; color: #991b1b; }
 
-        /* КАРТА */
+        /* ИНТЕРАКТИВНАЯ КАРТА (БЕЗ КАРТИНКИ) */
+        .floor-switcher { display: flex; gap: 10px; margin-bottom: 25px; }
+        .floor-btn { padding: 10px 20px; background: white; border: 2px solid #cbd5e1; border-radius: 6px; font-size: 14px; font-weight: bold; color: #475569; cursor: pointer; transition: all 0.2s; }
+        .floor-btn:hover { background: #f1f5f9; color: #0f172a; }
+        .floor-btn.active { background: #0284c7; color: white; border-color: #0284c7; box-shadow: 0 4px 6px -1px rgba(2, 132, 199, 0.3); }
+
+        #map-container { background: #ffffff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; min-height: 200px; }
         
-        #map-container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: inline-block; }
-        .room { fill: #e2e8f0; stroke: #1e293b; stroke-width: 2; cursor: pointer; transition: fill 0.2s; }
-        .room:hover { fill: #cbd5e1; }
-        #info-box { margin-top: 20px; padding: 15px; background: #e2e8f0; border-radius: 8px; max-width: 500px; }
+        .map-floor { display: none; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px; }
+        .map-floor.active { display: grid; }
+
+        .room { background: #f1f5f9; border: 2px solid #cbd5e1; border-radius: 8px; padding: 20px 10px; text-align: center; font-weight: bold; color: #1e293b; cursor: pointer; transition: all 0.2s; user-select: none; }
+        .room:hover { background: #e2e8f0; border-color: #94a3b8; transform: translateY(-2px); }
+        .room.selected { background: #e0f2fe; border-color: #0284c7; color: #0369a1; }
+
+        #info-box { margin-top: 25px; padding: 20px; background: #f1f5f9; border-radius: 8px; border-left: 5px solid #64748b; }
+        #info-box.has-lesson { border-left-color: #22c55e; background: #f0fdf4; }
     </style>
 </head>
 <body>
@@ -74,57 +85,51 @@
     </div>
 
     <div id="main-content">
-        
         <div id="map-nav" class="content-section active">
-            <h1>Интерактивная карта</h1>
-            <div id="map-container">
-                <div class="floor-switcher">
-                    <button class="floor-btn active" onclick="switchFloor(1)">1 этаж</button>
-                    <button class="floor-btn" onclick="switchFloor(2)">2 этаж</button>
-                    <button class="floor-btn" onclick="switchFloor(3)">3 этаж</button>
-                </div>
-
-                <div class="map-container">
-                    <img id="map-base-img" src="floor1.png" alt="План лицея">
-
-                    <div id="floor-1" class="map-floor active">
-                        <div id="room-105" class="map-room" style="left: 50px; top: 100px;">105</div>
-                        <div id="room-106" class="map-room" style="left: 110px; top: 100px;">106</div>
-                        <div id="room-108" class="map-room" style="left: 170px; top: 100px;">108</div>
-                        <div id="room-121" class="map-room" style="left: 230px; top: 100px;">121</div>
-                    </div>
-
-                    <div id="floor-2" class="map-floor">
-                        <div id="room-202" class="map-room" style="left: 60px; top: 120px;">202</div>
-                        <div id="room-206" class="map-room" style="left: 120px; top: 120px;">206</div>
-                        <div id="room-207" class="map-room" style="left: 180px; top: 120px;">207</div>
-                        <div id="room-210" class="map-room" style="left: 240px; top: 120px;">210</div>
-                        <div id="room-STEM" class="map-room" style="left: 300px; top: 120px;">STEM</div>
-                    </div>
-
-                    <div id="floor-3" class="map-floor">
-                        <div id="room-304" class="map-room" style="left: 70px; top: 140px;">304</div>
-                        <div id="room-308" class="map-room" style="left: 130px; top: 140px;">308</div>
-                        <div id="room-309" class="map-room" style="left: 190px; top: 140px;">309</div>
-                        <div id="room-310" class="map-room" style="left: 250px; top: 140px;">310</div>
-                <div id="room-317" class="map-room" style="left: 310px; top: 140px;">317</div>
-                    </div>
-                </div>
-                
-                <svg width="500" height="200" viewBox="0 0 500 200">
-                    <rect id="room-317" class="room" x="50" y="50" width="120" height="100" />
-                    <text x="110" y="105" text-anchor="middle" font-weight="bold">317 (Қаз)</text>
-
-                    <rect id="room-308" class="room" x="200" y="50" width="120" height="100" />
-                    <text x="260" y="105" text-anchor="middle" font-weight="bold">308 (Инф)</text>
-
-                    <rect id="room-313" class="room" x="350" y="50" width="120" height="100" />
-                    <text x="410" y="105" text-anchor="middle" font-weight="bold">313 (Тур)</text>
-                </svg>
+            <h1>Интерактивная карта здания</h1>
+            
+            <div class="floor-switcher">
+                <button class="floor-btn active" onclick="switchFloor(1)">1 Этаж</button>
+                <button class="floor-btn" onclick="switchFloor(2)">2 Этаж</button>
+                <button class="floor-btn" onclick="switchFloor(3)">3 Этаж</button>
             </div>
+
+            <div id="map-container">
+                <div id="floor-1" class="map-floor active">
+                    <div id="room-105" class="room">Каб. 105</div>
+                    <div id="room-106" class="room">Каб. 106</div>
+                    <div id="room-107" class="room">Каб. 107</div>
+                    <div id="room-108" class="room">Каб. 108</div>
+                    <div id="room-114" class="room">Каб. 114</div>
+                    <div id="room-115" class="room">Каб. 115</div>
+                    <div id="room-121" class="room">Каб. 121</div>
+                    <div id="room-sz" class="room">🏃 Спортзал</div>
+                </div>
+
+                <div id="floor-2" class="map-floor">
+                    <div id="room-202" class="room">Каб. 202</div>
+                    <div id="room-206" class="room">Каб. 206</div>
+                    <div id="room-207" class="room">Каб. 207</div>
+                    <div id="room-209" class="room">Каб. 209</div>
+                    <div id="room-210" class="room">Каб. 210</div>
+                    <div id="room-213" class="room">Каб. 213</div>
+                    <div id="room-214" class="room">Каб. 214</div>
+                    <div id="room-STEM" class="room">🔬 STEM</div>
+                </div>
+
+                <div id="floor-3" class="map-floor">
+                    <div id="room-304" class="room">Каб. 304</div>
+                    <div id="room-308" class="room">Каб. 308</div>
+                    <div id="room-309" class="room">Каб. 309</div>
+                    <div id="room-310" class="room">Каб. 310</div>
+                    <div id="room-313" class="room">Каб. 313</div>
+                    <div id="room-317" class="room">Каб. 317</div>
+                </div>
+            </div>
+
             <div id="info-box">
-                <h3 id="room-title">Выберите кабинет на схеме</h3>
-                <p id="room-status"></p>
+                <h3 id="room-title">Выберите кабинет из списка выше</h3>
+                <p id="room-status" style="margin-top: 8px; color: #475569;"></p>
             </div>
         </div>
 
@@ -163,6 +168,15 @@
             document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(sectionId).classList.add('active');
             if (element) element.classList.add('active');
+        }
+
+        // Логика переключения этажей
+        function switchFloor(floorNumber) {
+            document.querySelectorAll('.map-floor').forEach(f => f.classList.remove('active'));
+            document.querySelectorAll('.floor-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(`floor-${floorNumber}`).classList.add('active');
+            event.target.classList.add('active');
         }
 
         function isCurrentSlot(startTimeStr, endTimeStr, targetDay) {
@@ -273,25 +287,41 @@
                     `;
                 });
 
+                // Клики по кабинетам на интерактивной карте
                 document.querySelectorAll('.room').forEach(room => {
                     room.addEventListener('click', () => {
+                        document.querySelectorAll('.room').forEach(r => r.classList.remove('selected'));
+                        room.classList.add('selected');
+
                         const roomId = room.id;
                         const roomDetails = cachedData.rooms.find(r => r.id === roomId);
-                        let statusText = "В этом кабинете по расписанию сейчас пусто.";
+                        const infoBox = document.getElementById('info-box');
+                        let statusText = "В этом кабинете по расписанию сейчас занятий нет.";
+                        let hasActiveLesson = false;
                         
                         cachedData.time_slots.forEach(slotInfo => {
                             days.forEach(day => {
                                 if (isCurrentSlot(slotInfo.start, slotInfo.end, day)) {
                                     const activeLesson = cachedData.schedule.find(s => s.room_id === roomId && s.slot === slotInfo.slot && s.day === day);
                                     if (activeLesson) {
-                                        statusText = `<strong>Идет занятие:</strong> ${activeLesson.subject} (${activeLesson.group})<br><strong>Класс:</strong> ${activeLesson.class_name}<br><strong>Учитель:</strong> ${activeLesson.teacher}`;
+                                        hasActiveLesson = true;
+                                        statusText = `<strong>Идет занятие прямо сейчас:</strong><br>
+                                                      📖 Предмет: ${activeLesson.subject} (${activeLesson.group})<br>
+                                                      👥 Класс: ${activeLesson.class_name}<br>
+                                                      👨‍🏫 Учитель: ${activeLesson.teacher}`;
                                     }
                                 }
                             });
                         });
 
+                        if (hasActiveLesson) {
+                            infoBox.classList.add('has-lesson');
+                        } else {
+                            infoBox.classList.remove('has-lesson');
+                        }
+
                         if (roomDetails) {
-                            document.getElementById('room-title').innerText = `${roomDetails.number} — ${roomDetails.description}`;
+                            document.getElementById('room-title').innerText = `Кабинет ${roomDetails.number} — ${roomDetails.description}`;
                             document.getElementById('room-status').innerHTML = statusText;
                         }
                     });
