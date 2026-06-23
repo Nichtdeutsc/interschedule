@@ -98,6 +98,8 @@
     { "day": "Пн", "slot": 3, "class_name": "8Б", "group": "all", "subject": "Көркем еңбек", "room_id": "room-213", "teacher": "Тәңірберген А.", "teacher_id": "06TA" },
     { "day": "Пн", "slot": 4, "class_name": "8Б", "group": "all", "subject": "Қазақ тілі", "room_id": "room-310", "teacher": "Гульзинат Е.", "teacher_id": "07GE" },
     { "day": "Пн", "slot": 5, "class_name": "8Б", "group": "all", "subject": "Дене шынықтыру", "room_id": "room-sz", "teacher": "Қайрат Х.", "teacher_id": "10QH" },
+    { "day": "Пн", "slot": 6, "class_name": "8Б", "group": "all", "subject": "Дене шынықтыру", "room_id": "room-sz", "teacher": "Қайрат Х.", "teacher_id": "10QH" },
+    { "day": "Пн", "slot": 7, "class_name": "8Б", "group": "all", "subject": "География", "room_id": "room-214", "teacher": "Тойжан Х.", "teacher_id": "20TH" },
 
     { "day": "Вт", "slot": 1, "class_name": "8Б", "group": "1 группа", "subject": "Ағылшын тілі", "room_id": "room-108", "teacher": "Гүлфарад Б.", "teacher_id": "23GB" },
     { "day": "Вт", "slot": 1, "class_name": "8Б", "group": "2 группа", "subject": "Физика", "room_id": "room-207", "teacher": "Аян Т.", "teacher_id": "11AT" },
@@ -106,6 +108,11 @@
     { "day": "Вт", "slot": 3, "class_name": "8Б", "group": "2 группа", "subject": "Алгебра", "room_id": "room-STEM", "teacher": "Нурболат Т.", "teacher_id": "02NT" },
     { "day": "Вт", "slot": 4, "class_name": "8Б", "group": "all", "subject": "Дене шынықтыру", "room_id": "room-sz", "teacher": "Қайрат Х.", "teacher_id": "10QH" },
     { "day": "Вт", "slot": 5, "class_name": "8Б", "group": "all", "subject": "Дене шынықтыру", "room_id": "room-sz", "teacher": "Қайрат Х.", "teacher_id": "10QH" },
+    { "day": "Вт", "slot": 6, "class_name": "8Б", "group": "1 группа", "subject": "Алгебра", "room_id": "room-STEM", "teacher": "Нурболат Т.", "teacher_id": "02NT" },
+    { "day": "Вт", "slot": 6, "class_name": "8Б", "group": "2 группа", "subject": "Геометрия", "room_id": "room-210", "teacher": "Ризабек Қ.", "teacher_id": "14RQ" },
+    { "day": "Вт", "slot": 7, "class_name": "8Б", "group": "1 группа", "subject": "Алгебра", "room_id": "room-STEM", "teacher": "Нурболат Т.", "teacher_id": "02NT" },
+    { "day": "Вт", "slot": 7, "class_name": "8Б", "group": "2 группа", "subject": "Ағылшын тілі", "room_id": "room-210", "teacher": "Елжас Н.", "teacher_id": "05EN" },
+    { "day": "Вт", "slot": 8, "class_name": "8Б", "group": "2 группа", "subject": "Ағылшын тілі", "room_id": "room-210", "teacher": "Елжас Н.", "teacher_id": "05EN" },
 
     { "day": "Ср", "slot": 1, "class_name": "8Б", "group": "all", "subject": "Орыс тілі", "room_id": "room-309", "teacher": "Саулеш Т.", "teacher_id": "09ST" },
     { "day": "Ср", "slot": 2, "class_name": "8Б", "group": "all", "subject": "Орыс тілі", "room_id": "room-309", "teacher": "Саулеш Т.", "teacher_id": "09ST" },
@@ -115,6 +122,7 @@
     { "day": "Ср", "slot": 6, "class_name": "8Б", "group": "1 группа", "subject": "Физика", "room_id": "room-207", "teacher": "Аян Т.", "teacher_id": "11AT" },
     { "day": "Ср", "slot": 6, "class_name": "8Б", "group": "2 группа", "subject": "Химия", "room_id": "room-210", "teacher": "Назерке Б.", "teacher_id": "15NB" },
     { "day": "Ср", "slot": 7, "class_name": "8Б", "group": "1 группа", "subject": "Химия", "room_id": "room-210", "teacher": "Назерке Б.", "teacher_id": "15NB" },
-    { "day": "Ср", "slot": 7, "class_name": "8Б", "group": "2 группа", "subject": "Алгебра", "room_id": "room-STEM", "teacher": "Нурболат Т.", "teacher_id": "02NT" }
+    { "day": "Ср", "slot": 7, "class_name": "8Б", "group": "2 группа", "subject": "Алгебра", "room_id": "room-STEM", "teacher": "Нурболат Т.", "teacher_id": "02NT" },
+    { "day": "Ср", "slot": 8, "class_name": "8Б", "group": "all", "subject": "Түрік тілі", "room_id": "room-313", "teacher": "Мурат Ш.", "teacher_id": "24MS" }
   ]
 }
