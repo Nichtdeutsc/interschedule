@@ -57,6 +57,23 @@
         .status-busy { background: #fee2e2; color: #991b1b; }
 
         /* КАРТА */
+        
+        #map-container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: inline-block; }
+        .room { fill: #e2e8f0; stroke: #1e293b; stroke-width: 2; cursor: pointer; transition: fill 0.2s; }
+        .room:hover { fill: #cbd5e1; }
+        #info-box { margin-top: 20px; padding: 15px; background: #e2e8f0; border-radius: 8px; max-width: 500px; }
+    </style>
+</head>
+<body>
+
+    <div id="sidebar">
+        <h2>Лицей Навигатор</h2>
+        <button class="menu-btn active" onclick="switchSection('map-nav', this)">🗺️ Карта лицея</button>
+        <button class="menu-btn" onclick="switchSection('schedule-nav', this)">📅 Расписание занятий</button>
+        <button class="menu-btn" onclick="switchSection('teachers-nav', this)">👨‍🏫 Учителя</button>
+    </div>
+
+    <div id="main-content">
         <div class="floor-switcher">
             <button class="floor-btn active" onclick="switchFloor(1)">1 этаж</button>
             <button class="floor-btn" onclick="switchFloor(2)">2 этаж</button>
@@ -89,22 +106,6 @@
                 <div id="room-317" class="map-room" style="left: 310px; top: 140px;">317</div>
             </div>
         </div>
-        #map-container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: inline-block; }
-        .room { fill: #e2e8f0; stroke: #1e293b; stroke-width: 2; cursor: pointer; transition: fill 0.2s; }
-        .room:hover { fill: #cbd5e1; }
-        #info-box { margin-top: 20px; padding: 15px; background: #e2e8f0; border-radius: 8px; max-width: 500px; }
-    </style>
-</head>
-<body>
-
-    <div id="sidebar">
-        <h2>Лицей Навигатор</h2>
-        <button class="menu-btn active" onclick="switchSection('map-nav', this)">🗺️ Карта лицея</button>
-        <button class="menu-btn" onclick="switchSection('schedule-nav', this)">📅 Расписание занятий</button>
-        <button class="menu-btn" onclick="switchSection('teachers-nav', this)">👨‍🏫 Учителя</button>
-    </div>
-
-    <div id="main-content">
         <div id="map-nav" class="content-section active">
             <h1>Интерактивная карта</h1>
             <div id="map-container">
