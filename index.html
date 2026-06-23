@@ -5,6 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Лицей Интерактивный Портал</title>
     <style>
+         body { 
+            font-family: 'Segoe UI', system-ui, sans-serif; 
+            display: flex; 
+            height: 100vh; 
+            background: #f8fafc; 
+            color: #0f172a;
+            overflow: hidden; /* Чтобы сайт не дёргался при скролле */
+         }
+
+        #sidebar { 
+            width: 260px; 
+            background: #1e293b; 
+            color: white; 
+            padding: 20px 0; 
+            display: flex; 
+            flex-direction: column; 
+            flex-shrink: 0; 
+            transition: transform 0.3s ease; /* Добавляем плавность для мобилок */
+            z-index: 1000;
+        }
+
+        #main-content { 
+            flex-grow: 1; 
+            padding: 40px; 
+            overflow-y: auto; 
+            position: relative;
+        }
+
+        /* Сетка комнат теперь будет гибкой и не сожмется в одну тонкую полоску */
+        .map-floor { 
+            display: none; 
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); 
+            gap: 12px; 
+        }
+        .map-floor.active { 
+            display: grid; 
+        }
+        
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', system-ui, sans-serif; display: flex; height: 100vh; background: #f8fafc; color: #0f172a; }
 
@@ -73,6 +111,67 @@
 
         #info-box { margin-top: 25px; padding: 20px; background: #f1f5f9; border-radius: 8px; border-left: 5px solid #64748b; }
         #info-box.has-lesson { border-left-color: #22c55e; background: #f0fdf4; }
+        
+        @media (max-width: 768px) {
+        body {
+            flex-direction: column; /* На мобилках контент идет сверху вниз */
+        }
+
+        /* Превращаем сайдбар в верхнюю компактную панель */
+        #sidebar {
+            width: 100%;
+            height: auto;
+            padding: 10px 0;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        #sidebar h2 {
+            display: none; /* Прячем большой заголовок меню на мобилках, чтобы сэкономить место */
+        }
+
+        .menu-btn {
+            width: auto;
+            padding: 10px 15px;
+            font-size: 14px;
+            text-align: center;
+            border-left: none;
+            border-bottom: 3px solid transparent;
+        }
+
+        .menu-btn.active {
+            border-left-color: transparent;
+            border-bottom-color: #38bdf8;
+        }
+
+        /* Настройки основного контента для мобилки */
+        #main-content {
+            padding: 20px 15px;
+        }
+
+        h1 {
+            font-size: 22px;
+        }
+
+        .floor-switcher {
+            margin-bottom: 15px;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .floor-btn {
+            flex-grow: 1;
+            padding: 8px 10px;
+            font-size: 13px;
+            text-align: center;
+        }
+    
+        .schedule-table th, .schedule-table td {
+            padding: 10px 8px;
+            font-size: 13px;
+        }    
     </style>
 </head>
 <body>
