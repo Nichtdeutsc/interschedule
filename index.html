@@ -49,6 +49,7 @@
         .teachers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
         .teacher-card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
         .teacher-card h3 { font-size: 18px; color: #0f172a; margin-bottom: 5px; }
+        .teacher-card .role { font-size: 12px; background: #e2e8f0; color: #475569; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
         .teacher-card .subject { color: #64748b; font-size: 14px; margin-bottom: 15px; }
         
         .status-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 13px; font-weight: 500; }
@@ -66,9 +67,9 @@
 
     <div id="sidebar">
         <h2>Лицей Навигатор</h2>
-        <button class="menu-btn active" onclick="switchSection('map-nav')">🗺️ Карта лицея</button>
-        <button class="menu-btn" onclick="switchSection('schedule-nav')">📅 Расписание занятий</button>
-        <button class="menu-btn" onclick="switchSection('teachers-nav')">👨‍🏫 Учителя</button>
+        <button class="menu-btn active" onclick="switchSection('map-nav', this)">🗺️ Карта лицея</button>
+        <button class="menu-btn" onclick="switchSection('schedule-nav', this)">📅 Расписание занятий</button>
+        <button class="menu-btn" onclick="switchSection('teachers-nav', this)">👨‍🏫 Учителя</button>
     </div>
 
     <div id="main-content">
@@ -77,7 +78,7 @@
             <div id="map-container">
                 <svg width="500" height="200" viewBox="0 0 500 200">
                     <rect id="room-317" class="room" x="50" y="50" width="120" height="100" />
-                    <text x="110" y="105" text-anchor="middle" font-weight="bold">317 (8А)</text>
+                    <text x="110" y="105" text-anchor="middle" font-weight="bold">317 (Қаз)</text>
 
                     <rect id="room-308" class="room" x="200" y="50" width="120" height="100" />
                     <text x="260" y="105" text-anchor="middle" font-weight="bold">308 (Инф)</text>
@@ -122,11 +123,11 @@
     <script>
         let cachedData = null;
 
-        function switchSection(sectionId) {
+        function switchSection(sectionId, element) {
             document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
             document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(sectionId).classList.add('active');
-            event.currentTarget.classList.add('active');
+            if (element) element.classList.add('active');
         }
 
         function isCurrentSlot(startTimeStr, endTimeStr, targetDay) {
@@ -149,7 +150,6 @@
         function renderSchedule(className) {
             const tbody = document.getElementById('table-body');
             tbody.innerHTML = '';
-            // Теперь обрабатываем три дня!
             const days = ['Пн', 'Вт', 'Ср']; 
 
             cachedData.time_slots.forEach(slotInfo => {
@@ -166,7 +166,6 @@
                     let cellClass = isNow ? 'current-lesson-row' : '';
 
                     if (slotInfo.slot === 0) {
-                        // Обед сквозной строкой для всех дней
                         rowHtml += `<td class="lunch-row ${cellClass}">Түскі ас / Обед ${isNow ? '<br><span class="now-badge">ИДЕТ СЕЙЧАС</span>' : ''}</td>`;
                     } else {
                         const lessons = cachedData.schedule.filter(s => s.slot === slotInfo.slot && s.day === day && s.class_name === className);
@@ -174,12 +173,13 @@
                         if (lessons.length > 0) {
                             lessons.forEach(l => {
                                 let groupClass = l.group === '1 группа' ? 'g1' : (l.group === '2 группа' ? 'g2' : 'g-all');
+                                let displayRoom = l.room_id ? l.room_id.replace('room-', '').toUpperCase() : '??';
                                 rowHtml += `
                                     <div class="lesson-block">
                                         <span class="group-badge ${groupClass}">${l.group}</span>
                                         <div><strong>${l.subject}</strong></div>
                                         <div class="teacher-name">${l.teacher}</div>
-                                        <div class="room-num">каб. ${l.room_id.replace('room-', '').toUpperCase()}</div>
+                                        <div class="room-num">каб. ${displayRoom}</div>
                                     </div>
                                 `;
                             });
@@ -201,63 +201,70 @@
         }
 
         async function initApp() {
-            const response = await fetch('data.json');
-            cachedData = await response.json();
+            try {
+                const response = await fetch('data.json');
+                cachedData = await response.json();
 
-            renderSchedule('8А');
+                renderSchedule('8А');
 
-            const teachersContainer = document.getElementById('teachers-container');
-            const days = ['Пн', 'Вт', 'Ср'];
-            
-            cachedData.teachers.forEach(teacher => {
-                let currentStatusHtml = `<span class="status-badge status-free">🟢 Свободен(а)</span>`;
+                const teachersContainer = document.getElementById('teachers-container');
+                const days = ['Пн', 'Вт', 'Ср'];
                 
-                cachedData.time_slots.forEach(slotInfo => {
-                    days.forEach(day => {
-                        if (isCurrentSlot(slotInfo.start, slotInfo.end, day)) {
-                            const activeLesson = cachedData.schedule.find(s => s.teacher_id === teacher.id && s.slot === slotInfo.slot && s.day === day);
-                            if (activeLesson) {
-                                currentStatusHtml = `
-                                    <span class="status-badge status-busy">
-                                        🔴 Урок: ${activeLesson.subject} (${activeLesson.class_name}, Каб. ${activeLesson.room_id.replace('room-', '').toUpperCase()})
-                                    </span>`;
-                            }
-                        }
-                    });
-                });
-
-                teachersContainer.innerHTML += `
-                    <div class="teacher-card">
-                        <h3>${teacher.name}</h3>
-                        <div class="subject">${teacher.subject}</div>
-                        <div>${currentStatusHtml}</div>
-                    </div>
-                `;
-            });
-
-            document.querySelectorAll('.room').forEach(room => {
-                room.addEventListener('click', () => {
-                    const roomId = room.id;
-                    const roomDetails = cachedData.rooms.find(r => r.id === roomId);
-                    let statusText = "В этом кабинете по расписанию сейчас пусто.";
+                cachedData.teachers.forEach(teacher => {
+                    let currentStatusHtml = `<span class="status-badge status-free">🟢 Свободен(а)</span>`;
                     
                     cachedData.time_slots.forEach(slotInfo => {
                         days.forEach(day => {
                             if (isCurrentSlot(slotInfo.start, slotInfo.end, day)) {
-                                const activeLesson = cachedData.schedule.find(s => s.room_id === roomId && s.slot === slotInfo.slot && s.day === day);
+                                const activeLesson = cachedData.schedule.find(s => s.teacher_id === teacher.id && s.slot === slotInfo.slot && s.day === day);
                                 if (activeLesson) {
-                                    statusText = `<strong>Идет занятие:</strong> ${activeLesson.subject} (${activeLesson.group})<br><strong>Класс:</strong> ${activeLesson.class_name}<br><strong>Учитель:</strong> ${activeLesson.teacher}`;
+                                    let activeRoom = activeLesson.room_id ? activeLesson.room_id.replace('room-', '').toUpperCase() : '??';
+                                    currentStatusHtml = `
+                                        <span class="status-badge status-busy">
+                                            🔴 Урок: ${activeLesson.subject} (${activeLesson.class_name}, Каб. ${activeRoom})
+                                        </span>`;
                                 }
                             }
                         });
                     });
 
-                    if (roomDetails) {
-                        document.getElementById('room-title').innerText = `${roomDetails.number} — ${roomDetails.description}`;
-                        document.getElementById('room-status').innerHTML = statusText;
-                    }
+                    teachersContainer.innerHTML += `
+                        <div class="teacher-card">
+                            <h3>${teacher.name}</h3>
+                            <span class="role">${teacher.role || 'Учитель'}</span>
+                            <div class="subject">${teacher.subject}</div>
+                            <div>${currentStatusHtml}</div>
+                        </div>
+                    `;
                 });
-            });
+
+                document.querySelectorAll('.room').forEach(room => {
+                    room.addEventListener('click', () => {
+                        const roomId = room.id;
+                        const roomDetails = cachedData.rooms.find(r => r.id === roomId);
+                        let statusText = "В этом кабинете по расписанию сейчас пусто.";
+                        
+                        cachedData.time_slots.forEach(slotInfo => {
+                            days.forEach(day => {
+                                if (isCurrentSlot(slotInfo.start, slotInfo.end, day)) {
+                                    const activeLesson = cachedData.schedule.find(s => s.room_id === roomId && s.slot === slotInfo.slot && s.day === day);
+                                    if (activeLesson) {
+                                        statusText = `<strong>Идет занятие:</strong> ${activeLesson.subject} (${activeLesson.group})<br><strong>Класс:</strong> ${activeLesson.class_name}<br><strong>Учитель:</strong> ${activeLesson.teacher}`;
+                                    }
+                                }
+                            });
+                        });
+
+                        if (roomDetails) {
+                            document.getElementById('room-title').innerText = `${roomDetails.number} — ${roomDetails.description}`;
+                            document.getElementById('room-status').innerHTML = statusText;
+                        }
+                    });
+                });
+
+            } catch (error) {
+                console.error("Ошибка инициализации приложения: ", error);
+            }
         }
 
         initApp();
