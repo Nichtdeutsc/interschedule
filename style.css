@@ -1,46 +1,102 @@
-/* Стили для кнопок этажей */
-.floor-switcher {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
+/* --- СКОРРЕКТИРОВАННЫЕ СТИЛИ (ЗАМЕНИ СТАРЫЕ) --- */
+body { 
+    font-family: 'Segoe UI', system-ui, sans-serif; 
+    display: flex; 
+    height: 100vh; 
+    background: #f8fafc; 
+    color: #0f172a; 
+    overflow: hidden; /* Чтобы сайт не дёргался при скролле */
 }
 
-.floor-btn {
-    padding: 8px 16px;
-    background-color: #f0f0f0;
-    border: 2px solid #ccc;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: all 0.2s ease;
+#sidebar { 
+    width: 260px; 
+    background: #1e293b; 
+    color: white; 
+    padding: 20px 0; 
+    display: flex; 
+    flex-direction: column; 
+    flex-shrink: 0; 
+    transition: transform 0.3s ease; /* Добавляем плавность для мобилок */
+    z-index: 1000;
 }
 
-.floor-btn:hover {
-    background-color: #e0e0e0;
-}
-
-.floor-btn.active {
-    background-color: #007bff;
-    color: white;
-    border-color: #0056b3;
-}
-
-/* Логика отображения этажей на карте */
-.map-floor {
-    display: none; /* Скрываем все этажи */
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-.map-floor.active {
-    display: block; /* Показываем только активный этаж */
-}
-
-/* Контейнер должен иметь relative, чтобы кабинеты с absolute позиционировались внутри него */
-.map-container {
+#main-content { 
+    flex-grow: 1; 
+    padding: 40px; 
+    overflow-y: auto; 
     position: relative;
-    display: inline-block;
+}
+
+/* Сетка комнат теперь будет гибкой и не сожмется в одну тонкую полоску */
+.map-floor { 
+    display: none; 
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); 
+    gap: 12px; 
+}
+.map-floor.active { 
+    display: grid; 
+}
+
+
+/* --- ДОБАВЬ ЭТОТ БЛОК В САМЫЙ КОНЕЦ ВНУТРИ <style> --- */
+@media (max-width: 768px) {
+    body {
+        flex-direction: column; /* На мобилках контент идет сверху вниз */
+    }
+
+    /* Превращаем сайдбар в верхнюю компактную панель */
+    #sidebar {
+        width: 100%;
+        height: auto;
+        padding: 10px 0;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    #sidebar h2 {
+        display: none; /* Прячем большой заголовок меню на мобилках, чтобы сэкономить место */
+    }
+
+    .menu-btn {
+        width: auto;
+        padding: 10px 15px;
+        font-size: 14px;
+        text-align: center;
+        border-left: none;
+        border-bottom: 3px solid transparent;
+    }
+
+    .menu-btn.active {
+        border-left-color: transparent;
+        border-bottom-color: #38bdf8;
+    }
+
+    /* Настройки основного контента для мобилки */
+    #main-content {
+        padding: 20px 15px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+
+    .floor-switcher {
+        margin-bottom: 15px;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .floor-btn {
+        flex-grow: 1;
+        padding: 8px 10px;
+        font-size: 13px;
+        text-align: center;
+    }
+    
+    .schedule-table th, .schedule-table td {
+        padding: 10px 8px;
+        font-size: 13px;
+    }
 }
