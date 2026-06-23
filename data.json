@@ -5,7 +5,7 @@
     { "slot": 3, "start": "10:30", "end": "11:10" },
     { "slot": 4, "start": "11:20", "end": "12:00" },
     { "slot": 5, "start": "12:10", "end": "12:50" },
-    { "slot": 0, "start": "12:50", "end": "13:40" }, // lunch
+    { "slot": 0, "start": "12:50", "end": "13:40" },
     { "slot": 6, "start": "13:40", "end": "14:20" },
     { "slot": 7, "start": "14:30", "end": "15:10" },
     { "slot": 8, "start": "15:20", "end": "16:00" }
@@ -48,7 +48,6 @@
     { "id": "19RN", "name": "Рауят Н.", "role": "Учитель", "subject": "История" },
     { "id": "20TH", "name": "Тойжан Х.", "role": "Учитель", "subject": "География" },
     { "id": "21BS", "name": "Бейбарыс М.", "role": "Учитель", "subject": "Биология" }
-
   ],
   "schedule": [
     { "day": "Пн", "slot": 1, "class_name": "8А", "group": "all", "subject": "Сынып сағаты", "room_id": "room-317", "teacher": "Дана А.", "teacher_id": "01DA" },
@@ -67,11 +66,11 @@
     { "day": "Вт", "slot": 1, "class_name": "8А", "group": "2 группа", "subject": "Алгебра", "room_id": "room-STEM", "teacher": "Нурболат Т.", "teacher_id": "02NT" },
     { "day": "Вт", "slot": 2, "class_name": "8А", "group": "1 группа", "subject": "Физика", "room_id": "room-207", "teacher": "Аян Т.", "teacher_id": "11AT" },
     { "day": "Вт", "slot": 2, "class_name": "8А", "group": "2 группа", "subject": "Алгебра", "room_id": "room-STEM", "teacher": "Нурболат Т.", "teacher_id": "02NT" },
-    { "day": "Вт", "slot": 3, "class_name": "8А", "group": "all", "subject": "Қазақстан тарихы", "room_id": "room-121", "teacher": "Рауят Н.", "teacher_id": "09RN" },
+    { "day": "Вт", "slot": 3, "class_name": "8А", "group": "all", "subject": "Қазақстан тарихы", "room_id": "room-121", "teacher": "Рауят Н.", "teacher_id": "19RN" },
     { "day": "Вт", "slot": 4, "class_name": "8А", "group": "all", "subject": "Дене шынықтыру", "room_id": "room-sz", "teacher": "Қайрат Х.", "teacher_id": "10QH" },
     { "day": "Вт", "slot": 5, "class_name": "8А", "group": "all", "subject": "Орыс тілі", "room_id": "room-309", "teacher": "Саулеш Т.", "teacher_id": "09ST" },
     { "day": "Вт", "slot": 6, "class_name": "8А", "group": "all", "subject": "Орыс тілі", "room_id": "room-309", "teacher": "Саулеш Т.", "teacher_id": "09ST" },
-    { "day": "Вт", "slot": 7, "class_name": "8А", "group": "all", "subject": "География", "room_id": "room-214", "teacher": "Тойжан Х.", "teacher_id": "12TH" },
+    { "day": "Вт", "slot": 7, "class_name": "8А", "group": "all", "subject": "География", "room_id": "room-214", "teacher": "Тойжан Х.", "teacher_id": "20TH" },
 
     { "day": "Ср", "slot": 1, "class_name": "8А", "group": "2 группа", "subject": "Биология", "room_id": "room-214", "teacher": "Бейбарыс М.", "teacher_id": "21BS" },
     { "day": "Ср", "slot": 2, "class_name": "8А", "group": "2 группа", "subject": "Биология", "room_id": "room-214", "teacher": "Бейбарыс М.", "teacher_id": "21BS" },
@@ -86,6 +85,6 @@
     { "day": "Ср", "slot": 6, "class_name": "8А", "group": "2 группа", "subject": "Ағылшын тілі", "room_id": "room-STEM", "teacher": "Елжас Н.", "teacher_id": "05EN" },
     { "day": "Ср", "slot": 7, "class_name": "8А", "group": "1 группа", "subject": "Ағылшын тілі", "room_id": "room-115", "teacher": "Айжан М.", "teacher_id": "04AM" },
     { "day": "Ср", "slot": 7, "class_name": "8А", "group": "2 группа", "subject": "Ағылшын тілі", "room_id": "room-STEM", "teacher": "Елжас Н.", "teacher_id": "05EN" },
-    { "day": "Ср", "slot": 8, "class_name": "8А", "group": "all", "subject": "Қазақ тілі", "room_id": "room-310", "teacher": "Гульзинат Е.", "teacher_id": "16GE" }
-    // иногда уроки ведут не в тех кабинетах, которые для этого созданы, например геометрия проводится в географии
+    { "day": "Ср", "slot": 8, "class_name": "8А", "group": "all", "subject": "Қазақ тілі", "room_id": "room-310", "teacher": "Гульзинат Е.", "teacher_id": "07GE" }
+  ]
 }
