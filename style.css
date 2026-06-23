@@ -1,14 +1,46 @@
-body {
+/* Стили для кнопок этажей */
+.floor-switcher {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #222;
+    gap: 10px;
+    margin-bottom: 15px;
 }
 
-canvas {
-    background-color: #fff;
-    border: 5px solid #555;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+.floor-btn {
+    padding: 8px 16px;
+    background-color: #f0f0f0;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+.floor-btn:hover {
+    background-color: #e0e0e0;
+}
+
+.floor-btn.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #0056b3;
+}
+
+/* Логика отображения этажей на карте */
+.map-floor {
+    display: none; /* Скрываем все этажи */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.map-floor.active {
+    display: block; /* Показываем только активный этаж */
+}
+
+/* Контейнер должен иметь relative, чтобы кабинеты с absolute позиционировались внутри него */
+.map-container {
+    position: relative;
+    display: inline-block;
 }
