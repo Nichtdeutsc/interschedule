@@ -57,6 +57,38 @@
         .status-busy { background: #fee2e2; color: #991b1b; }
 
         /* КАРТА */
+        <div class="floor-switcher">
+            <button class="floor-btn active" onclick="switchFloor(1)">1 этаж</button>
+            <button class="floor-btn" onclick="switchFloor(2)">2 этаж</button>
+            <button class="floor-btn" onclick="switchFloor(3)">3 этаж</button>
+        </div>
+
+        <div class="map-container">
+            <img id="map-base-img" src="floor1.png" alt="План лицея">
+
+            <div id="floor-1" class="map-floor active">
+                <div id="room-105" class="map-room" style="left: 50px; top: 100px;">105</div>
+                <div id="room-106" class="map-room" style="left: 110px; top: 100px;">106</div>
+                <div id="room-108" class="map-room" style="left: 170px; top: 100px;">108</div>
+                <div id="room-121" class="map-room" style="left: 230px; top: 100px;">121</div>
+            </div>
+
+            <div id="floor-2" class="map-floor">
+                <div id="room-202" class="map-room" style="left: 60px; top: 120px;">202</div>
+                <div id="room-206" class="map-room" style="left: 120px; top: 120px;">206</div>
+                <div id="room-207" class="map-room" style="left: 180px; top: 120px;">207</div>
+                <div id="room-210" class="map-room" style="left: 240px; top: 120px;">210</div>
+                <div id="room-STEM" class="map-room" style="left: 300px; top: 120px;">STEM</div>
+            </div>
+
+            <div id="floor-3" class="map-floor">
+                <div id="room-304" class="map-room" style="left: 70px; top: 140px;">304</div>
+                <div id="room-308" class="map-room" style="left: 130px; top: 140px;">308</div>
+                <div id="room-309" class="map-room" style="left: 190px; top: 140px;">309</div>
+                <div id="room-310" class="map-room" style="left: 250px; top: 140px;">310</div>
+                <div id="room-317" class="map-room" style="left: 310px; top: 140px;">317</div>
+            </div>
+        </div>
         #map-container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: inline-block; }
         .room { fill: #e2e8f0; stroke: #1e293b; stroke-width: 2; cursor: pointer; transition: fill 0.2s; }
         .room:hover { fill: #cbd5e1; }
