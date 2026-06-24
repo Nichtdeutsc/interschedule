@@ -8,7 +8,10 @@
          * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', system-ui, sans-serif; display: flex; height: 100vh; background: #f8fafc; color: #0f172a; }
 
-        /* САЙДБАР */
+        /* САЙДБАР 
+        на мобилках нормально не отображается
+        я не буду это в ближайшее время чинить */
+        
         #sidebar { width: 260px; background: #1e293b; color: white; padding: 20px 0; display: flex; flex-direction: column; flex-shrink: 0; }
         #sidebar h2 { font-size: 20px; text-align: center; margin-bottom: 30px; color: #38bdf8; }
         .menu-btn { width: 100%; padding: 15px 25px; background: none; border: none; color: #94a3b8; text-align: left; font-size: 16px; cursor: pointer; transition: all 0.2s; border-left: 4px solid transparent; }
@@ -79,9 +82,9 @@
 
     <div id="sidebar">
         <h2>Лицей Навигатор</h2>
-        <button class="menu-btn active" onclick="switchSection('map-nav', this)">🗺️ Карта лицея</button>
-        <button class="menu-btn" onclick="switchSection('schedule-nav', this)">📅 Расписание занятий</button>
-        <button class="menu-btn" onclick="switchSection('teachers-nav', this)">👨‍🏫 Учителя</button>
+        <button class="menu-btn active" onclick="switchSection('map-nav', this)"> Карта лицея</button>
+        <button class="menu-btn" onclick="switchSection('schedule-nav', this)"> Расписание занятий</button>
+        <button class="menu-btn" onclick="switchSection('teachers-nav', this)"> Учителя</button>
     </div>
 
     <div id="main-content">
@@ -103,7 +106,7 @@
                     <div id="room-114" class="room">Каб. 114</div>
                     <div id="room-115" class="room">Каб. 115</div>
                     <div id="room-121" class="room">Каб. 121</div>
-                    <div id="room-sz" class="room">🏃 Спортзал</div>
+                    <div id="room-sz" class="room"> Спортзал</div>
                 </div>
 
                 <div id="floor-2" class="map-floor">
@@ -170,7 +173,6 @@
             if (element) element.classList.add('active');
         }
 
-        // Логика переключения этажей
         function switchFloor(floorNumber) {
             document.querySelectorAll('.map-floor').forEach(f => f.classList.remove('active'));
             document.querySelectorAll('.floor-btn').forEach(b => b.classList.remove('active'));
@@ -179,6 +181,7 @@
             event.target.classList.add('active');
         }
 
+        // слоты это уроки
         function isCurrentSlot(startTimeStr, endTimeStr, targetDay) {
             const now = new Date();
             const daysMap = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
@@ -259,29 +262,50 @@
                 const teachersContainer = document.getElementById('teachers-container');
                 const days = ['Пн', 'Вт', 'Ср'];
                 
-                cachedData.teachers.forEach(teacher => {
-                    let currentStatusHtml = teacher.geschlecht === 'м' ? '<span class="status-badge status-free">🟢 Свободен</span>' : '<span class="status-badge status-free">🟢 Свободна</span>';
-                    
-                    cachedData.time_slots.forEach(slotInfo => {
-                        days.forEach(day => {
-                            if (isCurrentSlot(slotInfo.start, slotInfo.end, day)) {
-                                const activeLesson = cachedData.schedule.find(s => s.teacher_id === teacher.id && s.slot === slotInfo.slot && s.day === day);
-                                
-                                if (activeLesson) {
-                                    let activeRoom = activeLesson.room_id ? activeLesson.room_id.replace('room-', '').toUpperCase() : '??';
-                                    currentStatusHtml = teacher.geschlecht === 'm' ? `
-                                        <span class="status-badge status-busy">
-                                            Занят. Урок: ${activeLesson.subject} (${activeLesson.class_name}, Каб. ${activeRoom})
-                                        </span>` :
-                                        `<span class="status-badge status-busy">
-                                            Занята. Урок: ${activeLesson.subject} (${activeLesson.class_name}, Каб. ${activeRoom})
-                                        </span>`;
-                                }
-                            }
-                        });
-                    });
+                // оптимизированно
+                let currentSlotInfo = null;
+                let currentDay = null;
 
-                    teachersContainer.innerHTML += `
+                cachedData.time_slots.forEach(slotInfo => {
+                    days.forEach(day => {
+                        if (isCurrentSlot(slotInfo.start, slotInfo.end, day)) {
+                            currentSlotInfo = slotInfo;
+                            currentDay = day;
+                        }
+                    });
+                });
+
+                let allCardsHtml = '';
+
+                /* оптмизированный перебор учителей
+                 знаете, просто если перибирать 5 дней в неделю 8 слотов весь персонал (кураторы, учителя, аби, медсестры, технички итд)
+                 то выходит где то 50 * 5 * 8 = 2000 итераций
+                 тем более с этюдами, чалками это число возрастает до 3000 итераций */
+                cachedData.teachers.forEach(teacher => {
+                    const isMale = teacher.geschlecht === 'м';
+                    const textFree = isMale ? 'Свободен' : 'Свободна';
+                    const textBusy = isMale ? 'Занят' : 'Занята';
+
+                    //  статус по умолчанию
+                    let currentStatusHtml = `<span class="status-badge status-free"> ${textFree}</span>`;
+
+                    if (currentSlotInfo && currentDay) {
+                        const activeLesson = cachedData.schedule.find(s => 
+                            s.teacher_id === teacher.id && 
+                            s.slot === currentSlotInfo.slot && 
+                            s.day === currentDay
+                    );
+
+                        if (activeLesson) {
+                            let activeRoom = activeLesson.room_id ? activeLesson.room_id.replace('room-', '').toUpperCase() : '??';
+                            currentStatusHtml = `
+                                <span class="status-badge status-busy">
+                                    ${textBusy}. Урок: ${activeLesson.subject} (${activeLesson.class_name}, Каб. ${activeRoom})
+                                </span>`;
+                        }
+                    }
+
+                    allCardsHtml += `
                         <div class="teacher-card">
                             <h3>${teacher.name}</h3>
                             <span class="role">${teacher.role || 'Учитель'}</span>
@@ -291,7 +315,9 @@
                     `;
                 });
 
-                // Клики по кабинетам на интерактивной карте
+                teachersContainer.innerHTML = allCardsHtml;
+
+                // клики по кабинетам на карте
                 document.querySelectorAll('.room').forEach(room => {
                     room.addEventListener('click', () => {
                         document.querySelectorAll('.room').forEach(r => r.classList.remove('selected'));
@@ -310,9 +336,9 @@
                                     if (activeLesson) {
                                         hasActiveLesson = true;
                                         statusText = `<strong>Идет занятие прямо сейчас:</strong><br>
-                                                      📖 Предмет: ${activeLesson.subject} (${activeLesson.group})<br>
-                                                      👥 Класс: ${activeLesson.class_name}<br>
-                                                      👨‍🏫 Учитель: ${activeLesson.teacher}`;
+                                                       Предмет: ${activeLesson.subject} (${activeLesson.group})<br>
+                                                       Класс: ${activeLesson.class_name}<br>
+                                                       Учитель: ${activeLesson.teacher}`;
                                     }
                                 }
                             });
