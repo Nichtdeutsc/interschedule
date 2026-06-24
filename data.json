@@ -26,7 +26,8 @@
     { "id": "room-214", "number": "214", "description": "Кабинет Географии" },
     { "id": "room-209", "number": "209", "description": "Кабинет Биологии" },
     { "id": "room-202", "number": "202", "description": "Кабинет Математики 1" },
-    { "id": "room-108", "number": "108", "description": "English 1" },
+    { "id": "room-107", "number": "107", "description": "English 2" },
+    { "id": "room-108", "number": "108", "description": "English 3" },
     { "id": "room-206", "number": "206", "description": "Кабинет Математики 2" }
   ],
   "teachers": [
