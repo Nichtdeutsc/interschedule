@@ -260,17 +260,21 @@
                 const days = ['Пн', 'Вт', 'Ср'];
                 
                 cachedData.teachers.forEach(teacher => {
-                    let currentStatusHtml = `<span class="status-badge status-free">🟢 Свободен(а)</span>`;
+                    let currentStatusHtml = teacher.geschlecht === 'м' ? '<span class="status-badge status-free">🟢 Свободен</span>' : '<span class="status-badge status-free">🟢 Свободна</span>';
                     
                     cachedData.time_slots.forEach(slotInfo => {
                         days.forEach(day => {
                             if (isCurrentSlot(slotInfo.start, slotInfo.end, day)) {
                                 const activeLesson = cachedData.schedule.find(s => s.teacher_id === teacher.id && s.slot === slotInfo.slot && s.day === day);
+                                
                                 if (activeLesson) {
                                     let activeRoom = activeLesson.room_id ? activeLesson.room_id.replace('room-', '').toUpperCase() : '??';
-                                    currentStatusHtml = `
+                                    currentStatusHtml = teacher.geschlecht === 'm' ? `
                                         <span class="status-badge status-busy">
-                                            🔴 Урок: ${activeLesson.subject} (${activeLesson.class_name}, Каб. ${activeRoom})
+                                            Занят. Урок: ${activeLesson.subject} (${activeLesson.class_name}, Каб. ${activeRoom})
+                                        </span>` :
+                                        `<span class="status-badge status-busy">
+                                            Занята. Урок: ${activeLesson.subject} (${activeLesson.class_name}, Каб. ${activeRoom})
                                         </span>`;
                                 }
                             }
