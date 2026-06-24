@@ -20,7 +20,7 @@
     { "id": "room-210", "number": "210", "description": "Кабинет Химии" },
     { "id": "room-sz", "number": "Спортзал", "description": "Спортзал" },
     { "id": "room-121", "number": "121", "description": "Кабинет Истории" },
-    { "id": "room-STEM", "number": "209", "description": "STEM" },
+    { "id": "room-STEM", "number": "STEM", "description": "STEM" },
     { "id": "room-115", "number": "115", "description": "Кабинет Английского языка" },
     { "id": "room-213", "number": "213", "description": "Гуманитарный кабинет" },
     { "id": "room-214", "number": "214", "description": "Кабинет Географии" },
