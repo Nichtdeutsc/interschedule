@@ -5,104 +5,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Лицей Интерактивный Портал</title>
     <style>
-         body { 
-            font-family: 'Segoe UI', system-ui, sans-serif; 
-            display: flex; 
-            height: 100vh; 
-            background: #f8fafc; 
-            color: #0f172a;
-            overflow: hidden; /* Чтобы сайт не дёргался при скролле */
-         }
+         * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; display: flex; height: 100vh; background: #f8fafc; color: #0f172a; }
 
-        #sidebar { 
-            width: 260px; 
-            background: #1e293b; 
-            color: white; 
-            padding: 20px 0; 
-            display: flex; 
-            flex-direction: column; 
-            flex-shrink: 0; 
-            transition: transform 0.3s ease; /* Добавляем плавность для мобилок */
-            z-index: 1000;
-        }
+        /* САЙДБАР */
+        #sidebar { width: 260px; background: #1e293b; color: white; padding: 20px 0; display: flex; flex-direction: column; flex-shrink: 0; }
+        #sidebar h2 { font-size: 20px; text-align: center; margin-bottom: 30px; color: #38bdf8; }
+        .menu-btn { width: 100%; padding: 15px 25px; background: none; border: none; color: #94a3b8; text-align: left; font-size: 16px; cursor: pointer; transition: all 0.2s; border-left: 4px solid transparent; }
+        .menu-btn:hover { background: #334155; color: white; }
+        .menu-btn.active { background: #334155; color: #38bdf8; border-left-color: #38bdf8; font-weight: bold; }
 
-        #main-content { 
-            flex-grow: 1; 
-            padding: 40px; 
-            overflow-y: auto; 
-            position: relative;
-        }
+        /* ОСНОВНОЙ КОНТЕНТ */
+        #main-content { flex-grow: 1; padding: 40px; overflow-y: auto; }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
 
-        /* Сетка комнат теперь будет гибкой и не сожмется в одну тонкую полоску */
-        .map-floor { 
-            display: none; 
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); 
-            gap: 12px; 
-        }
-        .map-floor.active { 
-            display: grid; 
-        }
-        
-        @media (max-width: 768px) {
-        body {
-            flex-direction: column; /* На мобилках контент идет сверху вниз */
-        }
+        .header-container { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        h1 { font-size: 28px; color: #1e293b; margin-bottom: 20px; }
 
-        /* Превращаем сайдбар в верхнюю компактную панель */
-        #sidebar {
-            width: 100%;
-            height: auto;
-            padding: 10px 0;
-            flex-direction: row;
-            justify-content: space-around;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
+        .class-selector { padding: 10px 20px; font-size: 16px; font-weight: bold; border-radius: 6px; border: 2px solid #cbd5e1; background: white; color: #1e293b; cursor: pointer; outline: none; }
 
-        #sidebar h2 {
-            display: none; /* Прячем большой заголовок меню на мобилках, чтобы сэкономить место */
-        }
+        /* ТАБЛИЦА РАСПИСАНИЯ */
+        .schedule-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .schedule-table th { background: #0f172a; color: white; padding: 14px 18px; text-align: left; font-size: 15px; }
+        .schedule-table td { padding: 16px 18px; border-bottom: 1px solid #e2e8f0; font-size: 15px; vertical-align: top; width: 30%; }
+        .schedule-table td:first-child { width: 10%; }
 
-        .menu-btn {
-            width: auto;
-            padding: 10px 15px;
-            font-size: 14px;
-            text-align: center;
-            border-left: none;
-            border-bottom: 3px solid transparent;
-        }
+        .group-badge { display: inline-block; padding: 2px 6px; font-size: 11px; font-weight: bold; border-radius: 4px; margin-bottom: 4px; }
+        .g1 { background: #dcfce7; color: #166534; }
+        .g2 { background: #fef9c3; color: #854d0e; }
+        .g-all { background: #f1f5f9; color: #475569; }
 
-        .menu-btn.active {
-            border-left-color: transparent;
-            border-bottom-color: #38bdf8;
-        }
+        .lesson-block { margin-bottom: 8px; padding-bottom: 8px; }
+        .lesson-block:not(:last-child) { border-bottom: 1px dashed #cbd5e1; }
+        .room-num { font-weight: bold; color: #0284c7; }
+        .teacher-name { font-size: 13px; color: #64748b; }
 
-        /* Настройки основного контента для мобилки */
-        #main-content {
-            padding: 20px 15px;
-        }
+        .current-lesson-row { background: #f0fdf4 !important; border-left: 6px solid #22c55e; }
+        .now-badge { background: #22c55e; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: bold; display: inline-block; margin-top: 5px; }
+        .lunch-row { background: #f8fafc; color: #94a3b8; font-style: italic; text-align: center; vertical-align: middle !important; }
 
-        h1 {
-            font-size: 22px;
-        }
+        /* СПИСОК УЧИТЕЛЕЙ */
+        .teachers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .teacher-card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
+        .teacher-card h3 { font-size: 18px; color: #0f172a; margin-bottom: 5px; }
+        .teacher-card .role { font-size: 12px; background: #e2e8f0; color: #475569; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+        .teacher-card .subject { color: #64748b; font-size: 14px; margin-bottom: 15px; }
 
-        .floor-switcher {
-            margin-bottom: 15px;
-            width: 100%;
-            justify-content: space-between;
-        }
+        .status-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 13px; font-weight: 500; }
+        .status-free { background: #e0f2fe; color: #0369a1; }
+        .status-busy { background: #fee2e2; color: #991b1b; }
 
-        .floor-btn {
-            flex-grow: 1;
-            padding: 8px 10px;
-            font-size: 13px;
-            text-align: center;
-        }
-    
-        .schedule-table th, .schedule-table td {
-            padding: 10px 8px;
-            font-size: 13px;
-        }    
+        /* ИНТЕРАКТИВНАЯ КАРТА (БЕЗ КАРТИНКИ) */
+        .floor-switcher { display: flex; gap: 10px; margin-bottom: 25px; }
+        .floor-btn { padding: 10px 20px; background: white; border: 2px solid #cbd5e1; border-radius: 6px; font-size: 14px; font-weight: bold; color: #475569; cursor: pointer; transition: all 0.2s; }
+        .floor-btn:hover { background: #f1f5f9; color: #0f172a; }
+        .floor-btn.active { background: #0284c7; color: white; border-color: #0284c7; box-shadow: 0 4px 6px -1px rgba(2, 132, 199, 0.3); }
+
+        #map-container { background: #ffffff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; min-height: 200px; }
+
+        .map-floor { display: none; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px; }
+        .map-floor.active { display: grid; }
+
+        .room { background: #f1f5f9; border: 2px solid #cbd5e1; border-radius: 8px; padding: 20px 10px; text-align: center; font-weight: bold; color: #1e293b; cursor: pointer; transition: all 0.2s; user-select: none; }
+        .room:hover { background: #e2e8f0; border-color: #94a3b8; transform: translateY(-2px); }
+        .room.selected { background: #e0f2fe; border-color: #0284c7; color: #0369a1; }
+
+        #info-box { margin-top: 25px; padding: 20px; background: #f1f5f9; border-radius: 8px; border-left: 5px solid #64748b; }
+        #info-box.has-lesson { border-left-color: #22c55e; background: #f0fdf4; }    
     </style>
 </head>
 <body>
