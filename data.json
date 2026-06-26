@@ -32,7 +32,7 @@
   ],
   "teachers": [
     { "id": "16AH", "name": "Айдар Х.", "role": "College council", "geschlecht": "м", "subject": "Биология", "telegram": "AydarHoca", "telephone": "" },
-    { "id": "04AM", "name": "Айжан М.", "role": "Учитель", "geschlecht": "ж", "subject": "Ағылшын тілі", "telegram": "@aizhanteacher", "telephone": "" },
+    { "id": "04AM", "name": "Айжан М.", "role": "Учитель", "geschlecht": "ж", "subject": "Ағылшын тілі", "telegram": "aizhanteacher", "telephone": "" },
     { "id": "11AT", "name": "Аян Т.", "role": "Учитель", "geschlecht": "м", "subject": "Физика", "telegram": "apacer12", "telephone": "" },
     { "id": "18AB", "name": "Алибек Б.", "role": "Учитель", "geschlecht": "м", "subject": "Қазақ тілі", "telegram": "brg_alibek", "telephone": "+7 702 242 95 02" },
     { "id": "21BS", "name": "Бейбарыс М.", "role": "Учитель", "geschlecht": "м", "subject": "Биология", "telegram": "Bibsology", "telephone": "+7 700 340 20 03" },
