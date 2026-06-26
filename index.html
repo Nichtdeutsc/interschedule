@@ -544,7 +544,8 @@
                 });
 
                 let allCardsHtml = '';
-
+                let contactsHtml = '';
+                
                 /* оптмизированный перебор учителей
                  знаете, просто если перибирать 5 дней в неделю 8 слотов весь персонал (кураторы, учителя, аби, медсестры, технички итд)
                  то выходит где то 50 * 5 * 8 = 2000 итераций
@@ -572,14 +573,14 @@
                                 </span>`;
                         }
                     }
-                let contactsHtml = '';
-                    if (teacher.telegram || teacher.phone) {
+                
+                    if (teacher.telegram || teacher.telephone) {
                         contactsHtml = `<div class="teacher-contacts">`;
                         if (teacher.telegram) {
                             contactsHtml += `<a href="https://t.me/${teacher.telegram}" target="_blank" class="contact-link"> @${teacher.telegram}</a>`;
                         }
-                        if (teacher.phone) {
-                            contactsHtml += `<a href="tel:${teacher.phone}" class="contact-link"> ${teacher.phone}</a>`;
+                        if (teacher.telephone) {
+                            contactsHtml += `<a href="tel:${teacher.telephone}" class="contact-link"> ${teacher.telephone}</a>`;
                         }
                         contactsHtml += `</div>`;
                     }
@@ -637,8 +638,8 @@
                     });
                 });
 
-            } catch (err) {
-                console.error("Ошибка инициализации приложения: ", err);
+            } catch (error) {
+                console.error("Ошибка инициализации приложения: ", error);
             }
         }
 
