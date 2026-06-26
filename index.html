@@ -572,15 +572,16 @@
                                 </span>`;
                         }
                     }
-
+                    
+                    let teacherphone = teacher.phone || teacher.telephone;
                     let contactsHtml = '';
-                    if (teacher.telegram || teacher.telephone) {
+                    if (teacher.telegram || teacherphone) {
                         contactsHtml = `<div class="teacher-contacts">`;
                         if (teacher.telegram) {
                             contactsHtml += `<a href="https://t.me/${teacher.telegram}" target="_blank" class="contact-link"> @${teacher.telegram}</a>`;
                         }
-                        if (teacher.telephone) {
-                            contactsHtml += `<a href="tel:${teacher.telephone}" class="contact-link"> ${teacher.telephone}</a>`;
+                        if (teacherphone) {
+                            contactsHtml += `<a href="tel:${teacherphone}" class="contact-link"> ${teacherphone}</a>`;
                         }
                         contactsHtml += `</div>`;
                     }
@@ -595,9 +596,7 @@
                             ${contactsHtml} </div>
                     `;
                 });
-
-                teachersContainer.innerHTML = allCardsHtml;
-
+                
                 // клики по кабинетам на карте
                 document.querySelectorAll('.room').forEach(room => {
                     room.addEventListener('click', () => {
