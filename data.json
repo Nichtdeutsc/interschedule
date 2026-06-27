@@ -133,7 +133,7 @@
   ],
 
   "classes": [
-    { "name": "8А", "classid": "29A", "kurator": "01DA", "class_teacher": "18AB", "abi": "25EO", "students": [
+    { "name": "8А", "classid": "29A", "kurator": "Дана А.", "class_teacher": "Алибек Б.", "abi": "Еламан О.", "students": [
       "Абдульдинов Алан",
       "Амангельды Арон",
       "Ахметов Мерей",
@@ -141,7 +141,7 @@
       "Доскалиев Адиль"
       ]
     },
-    { "name": "8Б", "classid": "29B", "Kurator": "22SS", "class_teacher": "11AT", "abi": "26AB", "students": [
+    { "name": "8Б", "classid": "29B", "Kurator": "Салтанат С.", "class_teacher": "Аян Т.", "abi": "Алинур Б.", "students": [
       "Алдан Нұриддин",
       "Бешников Бешка",
       "Вешников Вешка"
