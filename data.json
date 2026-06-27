@@ -10,6 +10,7 @@
     { "slot": 7, "start": "14:30", "end": "15:10" },
     { "slot": 8, "start": "15:20", "end": "16:00" }
   ],
+
   "rooms": [
     { "id": "room-317", "number": "317", "description": "Кабинет Казахского языка 2" },
     { "id": "room-308", "number": "308", "description": "Кабинет Информатики" },
@@ -30,9 +31,11 @@
     { "id": "room-108", "number": "108", "description": "English 3" },
     { "id": "room-206", "number": "206", "description": "Кабинет Математики 2" }
   ],
+
   "teachers": [
     { "id": "16AH", "name": "Айдар Х.", "role": "College council", "geschlecht": "м", "subject": "Биология", "telegram": "AydarHoca", "telephone": "" },
     { "id": "04AM", "name": "Айжан М.", "role": "Учитель", "geschlecht": "ж", "subject": "Ағылшын тілі", "telegram": "aizhanteacher", "telephone": "" },
+    { "id": "26AB", "name": "Алинур Б.", "role": "Аби", "geschlecht": "м", "subject": "none", "telegram": "alinur_bolatbek", "telephone": ""},
     { "id": "11AT", "name": "Аян Т.", "role": "Учитель", "geschlecht": "м", "subject": "Физика", "telegram": "apacer12", "telephone": "" },
     { "id": "18AB", "name": "Алибек Б.", "role": "Учитель", "geschlecht": "м", "subject": "Қазақ тілі", "telegram": "brg_alibek", "telephone": "+7 702 242 95 02" },
     { "id": "21BS", "name": "Бейбарыс М.", "role": "Учитель", "geschlecht": "м", "subject": "Биология", "telegram": "Bibsology", "telephone": "+7 700 340 20 03" },
@@ -40,6 +43,7 @@
     { "id": "07GE", "name": "Гульзинат Е.", "role": "Учитель", "geschlecht": "ж", "subject": "Қазақ тілі", "telegram": "GulzinatEginbaeva", "telephone": "" },
     { "id": "23GB", "name": "Гүлфарад Б.", "role": "Учитель", "geschlecht": "ж", "subject": "Ағылшын тілі", "telegram": "", "telephone": "" },
     { "id": "01DA", "name": "Дана А.", "role": "Куратор 8А", "geschlecht": "ж", "subject": "Сынып сағаты", "telegram": "", "telephone": "+7 705 573 30 50" },
+    { "id": "25EO", "name": "Еламан О.", "role": "Аби", "geschlecht": "м", "subject": "none", "telegram": "o_yelaman", "telephone": "+7 777 442 94 01"},
     { "id": "05EN", "name": "Елжас Н.", "role": "Учитель", "geschlecht": "м", "subject": "Ағылшын тілі", "telegram": "YelzhasNurtaza", "telephone": "+7 778 340 62 06" },
     { "id": "17IQ", "name": "Ислам Қ.", "role": "Директор общежития", "geschlecht": "м", "subject": "Физика", "telegram": "", "telephone": "+7 778 699 07 14" },
     { "id": "13KN", "name": "Куаныш Н.", "role": "Учитель", "geschlecht": "м", "subject": "Математика", "telegram": "KuanyshNR", "telephone": "" },
@@ -56,6 +60,7 @@
     { "id": "20TH", "name": "Тойжан Х.", "role": "Учитель", "geschlecht": "ж", "subject": "География", "telegram": "", "telephone": "+77052881544" },
     { "id": "08ET", "name": "Эрол Т.", "role": "Учитель", "geschlecht": "м", "subject": "Түрік тілі", "telegram": "", "telephone": "" }
   ],
+
   "schedule": [
     { "day": "Пн", "slot": 1, "class_name": "8А", "group": "all", "subject": "Сынып сағаты", "room_id": "room-317", "teacher": "Дана А.", "teacher_id": "01DA" },
     { "day": "Пн", "slot": 2, "class_name": "8А", "group": "1 группа", "subject": "Алгебра", "room_id": "room-STEM", "teacher": "Нурболат Т.", "teacher_id": "02NT" },
@@ -125,5 +130,22 @@
     { "day": "Ср", "slot": 7, "class_name": "8Б", "group": "1 группа", "subject": "Химия", "room_id": "room-210", "teacher": "Назерке Б.", "teacher_id": "15NB" },
     { "day": "Ср", "slot": 7, "class_name": "8Б", "group": "2 группа", "subject": "Алгебра", "room_id": "room-STEM", "teacher": "Нурболат Т.", "teacher_id": "02NT" },
     { "day": "Ср", "slot": 8, "class_name": "8Б", "group": "all", "subject": "Түрік тілі", "room_id": "room-313", "teacher": "Мурат Ш.", "teacher_id": "24MS" }
+  ],
+
+  "classes": [
+    { "name": "8А", "classid": "29A", "kurator": "01DA", "class_teacher": "18AB", "abi": "25EO", "students": [
+      "Абдульдинов Алан",
+      "Амангельды Арон",
+      "Ахметов Мерей",
+      "Бөкебаев Али",
+      "Доскалиев Адиль"
+      ]
+    },
+    { "name": "8Б", "classid": "29B", "Kurator": "22SS", "class_teacher": "11AT", "abi": "26AB", "students": [
+      "Алдан Нұриддин",
+      "Бешников Бешка",
+      "Вешников Вешка"
+      ]
+    }
   ]
 }
