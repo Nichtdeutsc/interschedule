@@ -166,7 +166,7 @@ async function initApp() {
             cachedData.classes.forEach(c => {
                 classesContainer.innerHTML += `
                     <div class="class-card" onclick="showClassDetails('${c.name}')">
-                        <h3>🏫 Класс ${c.name}</h3>
+                        <h3>Класс ${c.name}</h3>
                         <div style="font-size: 14px; color: #64748b; margin-top: 5px;">Учеников: ${c.students.length}</div>
                         <div style="font-size: 13px; color: #475569; margin-top: 8px;">Кл. рук: ${c.class_teacher}</div>
                     </div>
