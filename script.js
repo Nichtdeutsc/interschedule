@@ -91,7 +91,7 @@ function showClassDetails(className) {
     document.getElementById('details-class-name').innerText = `Информация о классе ${targetClass.name}`;
     document.getElementById('details-teacher').innerText = targetClass.class_teacher || '—';
     document.getElementById('details-kurator').innerText = targetClass.kurator || '—';
-    document.getElementById('details-tarbieshi').innerText = targetClass.tarbieshi || '—';
+    document.getElementById('details-abi').innerText = targetClass.abi || '—';
 
     const studentsList = document.getElementById('details-students');
     studentsList.innerHTML = '';
