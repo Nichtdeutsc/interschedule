@@ -17,9 +17,10 @@
         <button class="menu-btn" onclick="switchSection('teachers-nav', this)">Учителя</button>
         <button class="menu-btn" onclick="switchSection('classes-nav', this)">Классы</button>
     
-        <div class="sidebar-version"><span id="version"></span></div>
+        <div class="sidebar-version">Версия: <span id="version"></span> / <span id="last_updated_date"></span></div>
         <script>
             document.getElementById('version').innerText = version;
+            document.getElementById('last_updated_date').innerText = last_upd;
         </script>
     </div>
 
