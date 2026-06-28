@@ -1,5 +1,6 @@
 let cachedData = null;
 
+// cмена этажей
 function switchSection(sectionId, element) {
     document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
     document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.remove('active'));
@@ -14,6 +15,7 @@ function switchFloor(floorNumber) {
     event.target.classList.add('active');
 }
 
+// функция расписания
 function isCurrentSlot(startTimeStr, endTimeStr, targetDay) {
     const now = new Date();
     const daysMap = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
@@ -125,6 +127,7 @@ async function initApp() {
             });
         });
 
+        // статус учителей
         cachedData.teachers.forEach(teacher => {
             const isMale = teacher.geschlecht === 'м';
             const textFree = isMale ? 'Свободен' : 'Свободна';
@@ -208,7 +211,8 @@ async function initApp() {
             });
         });
 
-    } catch (error) {
+    }
+    catch (error) {
         console.error("Ошибка инициализации приложения: ", error);
     }
 }
