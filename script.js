@@ -62,11 +62,12 @@ function isCurrentSlot(startTimeStr, endTimeStr, targetDay) {
 }
 
 function timeToMinutes(timeStr) {
+    if (!timeStr) return 0;
     const [h, m] = timeStr.split(':').map(Number);
     return h * 60 + m;
 }
 
-// Главная функция обновления таймлайна и маркерной линии "Сейчас"
+// Главная функция обновления всей дорожной карты
 function updateTimeline() {
     const clockEl = document.getElementById('timeline-clock');
     const now = new Date();
@@ -81,21 +82,25 @@ function updateTimeline() {
     const currentMin = timeToMinutes(timeString);
     const lineEl = document.getElementById('timeline-now-line');
 
+    // Позиционирование красной линии "Сейчас"
     if (currentMin >= startDayMin && currentMin <= endDayMin && lineEl) {
         const totalRange = endDayMin - startDayMin;
         const currentOffset = currentMin - startDayMin;
         const percent = (currentOffset / totalRange) * 100;
-        lineEl.style.left = `calc(80px + ${percent}%)`;
+        lineEl.style.left = `calc(80px + ${percent}%)`; // 80px — отступ лейбла параллели
         lineEl.style.display = 'block';
     } else if (lineEl) {
         lineEl.style.display = 'none';
     }
 
+    // Рендерим базовые строки параллелей
     renderTimelineRow('timeline-junior', 'junior');
     renderTimelineRow('timeline-senior', 'senior');
     
+    // Рендерим многоуровневую шкалу дополнительных мероприятий
     renderDynamicEventsLine();
     
+    // Рендерим карточки внизу
     renderEventCards(timeString);
 }
 
@@ -114,31 +119,31 @@ function renderTimelineRow(containerId, targetGroup) {
 
         const startMin = Math.max(timeToMinutes(event.start), startDayMin);
         const endMin = Math.min(timeToMinutes(event.end), endDayMin);
-        
         const duration = endMin - startMin;
+        
         const leftPercent = ((startMin - startDayMin) / totalRange) * 100;
-        const widthPercent = ((endMin - startMin) / totalRange) * 100;
+        const widthPercent = (duration / totalRange) * 100;
 
+        // Если блок меньше или равен 30 минутам (чтение, полдник, перерывы), переворачиваем текст
         const isNarrow = duration <= 30 ? 'narrow-slot' : '';
-        const displayName = isNarrow ? event.name.split(' / ')[0] : event.name.split(' / ')[0];
 
         container.innerHTML += `
             <div class="timeline-block ${event.type} ${isNarrow}" 
                  style="left: ${leftPercent}%; width: ${widthPercent}%;" 
                  title="${event.name} (${event.start}-${event.end})">
-                 ${displayName}
+                 ${event.name.split(' / ')[0]}
             </div>`;
     });
 }
 
-// Функция для отрисовки отрезков событий на нижней шкале времени
+// Умная функция рендеринга мероприятий без перекрытий (по уровням/трекам)
 function renderDynamicEventsLine() {
     const container = document.getElementById('dynamic-events-line-row');
     if (!container) return;
     container.innerHTML = '';
 
     if (!cachedData || !cachedData.events || cachedData.events.length === 0) {
-        container.innerHTML = `<div style="padding: 5px 15px; color: #94a3b8; font-size: 12px; font-style: italic;">Нет запланированных отрезков</div>`;
+        container.innerHTML = `<div style="padding: 10px 15px; color: #94a3b8; font-size: 13px; font-style: italic;">На сегодня мероприятий не запланировано.</div>`;
         return;
     }
 
@@ -146,19 +151,60 @@ function renderDynamicEventsLine() {
     const endDayMin = timeToMinutes("22:30");
     const totalRange = endDayMin - startDayMin;
 
+    // Массив уровней (треков). Каждый уровень хранит занятые промежутки времени [start, end]
+    const rows = [];
+
     cachedData.events.forEach(event => {
         const startMin = timeToMinutes(event.time_start);
         const endMin = timeToMinutes(event.time_end);
 
+        // Игнорируем события вне рамок нашей временной шкалы
         if (startMin >= endDayMin || endMin <= startDayMin) return;
 
+        // Ищем первый уровень, где время этого события свободно
+        let targetRowIndex = -1;
+        for (let i = 0; i < rows.length; i++) {
+            let hasOverlap = false;
+            for (let slot of rows[i]) {
+                // Если интервалы пересекаются
+                if (startMin < slot.end && endMin > slot.start) {
+                    hasOverlap = true;
+                    break;
+                }
+            }
+            if (!hasOverlap) {
+                targetRowIndex = i;
+                break;
+            }
+        }
+
+        // Если свободного уровня не нашлось, создаем новый снизу
+        if (targetRowIndex === -1) {
+            rows.push([]);
+            targetRowIndex = rows.length - 1;
+        }
+
+        // Занимаем время на выбранном уровне
+        rows[targetRowIndex].push({ start: startMin, end: endMin });
+
+        // Рассчитываем координаты в процентах
         const leftPercent = ((Math.max(startMin, startDayMin) - startDayMin) / totalRange) * 100;
         const widthPercent = ((Math.min(endMin, endDayMin) - Math.max(startMin, startDayMin)) / totalRange) * 100;
 
-        container.innerHTML += `
+        // Создаем DOM-элемент уровня, если его еще нет на странице
+        let rowEl = document.getElementById(`events-track-${targetRowIndex}`);
+        if (!rowEl) {
+            rowEl = document.createElement('div');
+            rowEl.id = `events-track-${targetRowIndex}`;
+            rowEl.className = 'events-track-row';
+            container.appendChild(rowEl);
+        }
+
+        // Вставляем отрезок на свой уровень
+        rowEl.innerHTML += `
             <div class="event-segment" 
                  style="left: ${leftPercent}%; width: ${widthPercent}%;" 
-                 title="${event.name} (${event.time_start} - ${event.time_end})">
+                 title="${event.name} (${event.time_start} - ${event.time_end})\nМесто: ${event.location}">
                 ${event.name}
             </div>
         `;
@@ -172,7 +218,7 @@ function renderEventCards(currentTimeStr) {
 
     // Если в json вообще нет массива событий, пишем сообщение
     if (!cachedData || !cachedData.events || cachedData.events.length === 0) {
-        container.innerHTML = `<div style="color: #64748b; font-style: italic; grid-column: 1/-1;">На сегодня дополнительных событий или мини-игр не запланировано.</div>`;
+        container.innerHTML = `<div style="color: #64748b; font-style: italic; grid-column: 1/-1;">На сегодня мероприятий не запланировано.</div>`;
         return;
     }
 
