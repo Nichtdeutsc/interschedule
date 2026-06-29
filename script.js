@@ -5,25 +5,23 @@ const dailyRoutine = [
     { start: "08:00", end: "08:20", name: "Чтение", type: "ev-book", target: "all" },
     { start: "08:30", end: "09:10", name: "1 Урок", type: "ev-lesson", target: "all" },
     { start: "09:20", end: "10:00", name: "2 Урок", type: "ev-lesson", target: "all" },
-    { start: "10:00", end: "10:30", name: "Перерыв", type: "ev-rest", target: "all" },
+    { start: "10:00", end: "10:30", name: "Полдник", type: "ev-food", target: "all" },
     { start: "10:30", end: "11:10", name: "3 - Урок", type: "ev-lesson", target: "all" },
     { start: "11:20", end: "12:00", name: "4 - Урок", type: "ev-lesson", target: "all" },
     { start: "12:10", end: "12:50", name: "5 - Урок", type: "ev-lesson", target: "all" },
 
-    { start: "12:50", end: "13:30", name: "Обед", type: "ev-food", target: "junior" },
-    { start: "12:50", end: "13:30", name: "6 - Урок", type: "ev-lesson", target: "senior" },
+    { start: "12:50", end: "13:40", name: "Обед", type: "ev-food", target: "junior" },
+    { start: "13:00", end: "13:40", name: "6 - Урок", type: "ev-lesson", target: "senior" },
     { start: "13:40", end: "14:20", name: "6 - Урок", type: "ev-lesson", target: "junior" },
-    { start: "13:40", end: "14:20", name: "Обед", type: "ev-food", target: "senior" },
+    { start: "13:40", end: "14:30", name: "Обед", type: "ev-food", target: "senior" },
     
     { start: "14:30", end: "15:10", name: "7 - Урок", type: "ev-lesson", target: "all" },
     { start: "15:20", end: "16:00", name: "8 - Урок", type: "ev-lesson", target: "all" },
-    { start: "16:00", end: "16:15", name: "Перерыв", type: "ev-rest", target: "all" },
     { start: "16:15", end: "18:00", name: "Чалка", type: "ev-extra", target: "all" },
     { start: "18:00", end: "19:00", name: "Ужин", type: "ev-food", target: "all" },
     { start: "19:00", end: "19:40", name: "Этюд - 1", type: "ev-prep", target: "all" },
     { start: "19:50", end: "20:30", name: "Этюд - 2", type: "ev-prep", target: "all" },
-    { start: "20:30", end: "20:50", name: "Полдник", type: "ev-food", target: "all" },
-    { start: "20:50", end: "22:30", name: "Свободное время", type: "ev-rest", target: "all" },
+    { start: "20:30", end: "20:50", name: "Поздник", type: "ev-food", target: "all" },
     { start: "22:30", end: "23:59", name: "Отбой", type: "ev-sleep", target: "all" }
 ];
 
@@ -63,7 +61,6 @@ function isCurrentSlot(startTimeStr, endTimeStr, targetDay) {
     return nowTotal >= startTotal && nowTotal <= endTotal;
 }
 
-// Перевод времени в минуты от начала дня (07:00) для расчета ширины блоков дорожной карты
 function timeToMinutes(timeStr) {
     const [h, m] = timeStr.split(':').map(Number);
     return h * 60 + m;
@@ -97,6 +94,8 @@ function updateTimeline() {
     renderTimelineRow('timeline-junior', 'junior');
     renderTimelineRow('timeline-senior', 'senior');
     
+    renderDynamicEventsLine();
+    
     renderEventCards(timeString);
 }
 
@@ -111,20 +110,58 @@ function renderTimelineRow(containerId, targetGroup) {
 
     dailyRoutine.forEach(event => {
         if (event.target !== 'all' && event.target !== targetGroup) return;
-        if (timeToMinutes(event.start) >= endDayMin) return; // Отрезаем всё что после 22:30 для ровного таймлайна
+        if (timeToMinutes(event.start) >= endDayMin) return;
 
         const startMin = Math.max(timeToMinutes(event.start), startDayMin);
         const endMin = Math.min(timeToMinutes(event.end), endDayMin);
         
+        const duration = endMin - startMin;
         const leftPercent = ((startMin - startDayMin) / totalRange) * 100;
         const widthPercent = ((endMin - startMin) / totalRange) * 100;
 
+        const isNarrow = duration <= 30 ? 'narrow-slot' : '';
+        const displayName = isNarrow ? event.name.split(' / ')[0] : event.name.split(' / ')[0];
+
         container.innerHTML += `
-            <div class="timeline-block ${event.type}" 
+            <div class="timeline-block ${event.type} ${isNarrow}" 
                  style="left: ${leftPercent}%; width: ${widthPercent}%;" 
                  title="${event.name} (${event.start}-${event.end})">
-                 ${event.name.split(' / ')[0]}
+                 ${displayName}
             </div>`;
+    });
+}
+
+// Функция для отрисовки отрезков событий на нижней шкале времени
+function renderDynamicEventsLine() {
+    const container = document.getElementById('dynamic-events-line-row');
+    if (!container) return;
+    container.innerHTML = '';
+
+    if (!cachedData || !cachedData.events || cachedData.events.length === 0) {
+        container.innerHTML = `<div style="padding: 5px 15px; color: #94a3b8; font-size: 12px; font-style: italic;">Нет запланированных отрезков</div>`;
+        return;
+    }
+
+    const startDayMin = timeToMinutes("07:00");
+    const endDayMin = timeToMinutes("22:30");
+    const totalRange = endDayMin - startDayMin;
+
+    cachedData.events.forEach(event => {
+        const startMin = timeToMinutes(event.time_start);
+        const endMin = timeToMinutes(event.time_end);
+
+        if (startMin >= endDayMin || endMin <= startDayMin) return;
+
+        const leftPercent = ((Math.max(startMin, startDayMin) - startDayMin) / totalRange) * 100;
+        const widthPercent = ((Math.min(endMin, endDayMin) - Math.max(startMin, startDayMin)) / totalRange) * 100;
+
+        container.innerHTML += `
+            <div class="event-segment" 
+                 style="left: ${leftPercent}%; width: ${widthPercent}%;" 
+                 title="${event.name} (${event.time_start} - ${event.time_end})">
+                ${event.name}
+            </div>
+        `;
     });
 }
 
