@@ -181,6 +181,7 @@ h1 {
     border-radius: 6px;
     overflow: hidden;
 }
+
 .timeline-block {
     position: absolute;
     height: 100%;
@@ -191,12 +192,65 @@ h1 {
     font-weight: 600;
     color: white;
     text-align: center;
-    padding: 0 4px;
+    padding: 0 2px;
     cursor: pointer;
     transition: opacity 0.2s;
     overflow: hidden;
+}
+
+/* Класс для узких блоков (Чтение, Полдник, Перерывы и т.д.) */
+.timeline-block.narrow-slot {
+    font-size: 9px;
+    writing-mode: vertical-rl; /* Переворачиваем текст вертикально */
+    transform: rotate(180deg); /* Корректируем направление чтения снизу вверх */
+    line-height: 1;
+    padding: 2px 0;
+}
+
+.dynamic-events-timeline {
+    position: relative;
+    margin-top: 25px;
+    background: #f1f5f9;
+    border-radius: 8px;
+    padding: 20px 0;
+    min-width: 800px;
+    border: 1px dashed #cbd5e1;
+}
+
+.dynamic-events-title {
+    font-size: 12px;
+    font-weight: bold;
+    color: #475569;
+    text-transform: uppercase;
+    padding-left: 15px;
+    margin-bottom: 10px;
+}
+
+.events-line-container {
+    position: relative;
+    height: 30px;
+    margin-left: 80px; /* Выравнивание по сетке с верхними рядами */
+    background: #e2e8f0;
+    border-radius: 4px;
+}
+
+.event-segment {
+    position: absolute;
+    height: 70%;
+    top: 15%;
+    background: #0284c7;
+    color: white;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(2, 132, 199, 0.2);
+    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    padding: 0 5px;
 }
 .timeline-block:hover {
     opacity: 0.9;
