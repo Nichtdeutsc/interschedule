@@ -13,6 +13,7 @@
     <div id="sidebar">
         <h2>Лицей Навигатор</h2>
         <button class="menu-btn active" onclick="switchSection('map-nav', this)">Карта</button>
+        <button class="menu-btn" onclick="switchSection('events-nav', this)">События</button>
         <button class="menu-btn" onclick="switchSection('schedule-nav', this)">Расписание</button>
         <button class="menu-btn" onclick="switchSection('teachers-nav', this)">Учителя</button>
         <button class="menu-btn" onclick="switchSection('classes-nav', this)">Классы</button>
@@ -110,6 +111,40 @@
                 <ol class="students-list" id="details-students"></ol>
             </div>
         </div>
+        
+        <div id="events-nav" class="content-section">
+            <h1>Распорядок дня)</h1>
+            
+            <div class="timeline-wrapper">
+                <div class="timeline-header">
+                    <span>Параллель</span>
+                    <span id="timeline-clock" style="font-weight: bold; color: #0284c7;">Текущее время: --:--</span>
+                </div>
+                
+                <div class="timeline-container">
+                    <div id="timeline-now-line" class="timeline-now-line"><div class="now-pointer">Сейчас</div></div>
+                    
+                    <div class="timeline-row">
+                        <div class="timeline-label">7А-9А</div>
+                        <div class="timeline-blocks" id="timeline-junior"></div>
+                    </div>
+                    
+                    <div class="timeline-row">
+                        <div class="timeline-label">9Б-11Б</div>
+                        <div class="timeline-blocks" id="timeline-senior"></div>
+                    </div>
+                </div>
+                
+                <div class="timeline-hours">
+                    <span>07:00</span><span>09:00</span><span>11:00</span><span>13:00</span><span>15:00</span><span>17:00</span><span>19:00</span><span>21:00</span><span>22:30</span>
+                </div>
+            </div>
+
+            <h2 style="margin-top: 30px; margin-bottom: 15px; font-size: 20px;">Подробный список событий</h2>
+            <div class="events-grid" id="events-cards-container"></div>
+        </div>
+
+        
     </div>
 
     
