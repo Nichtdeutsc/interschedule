@@ -1,13 +1,45 @@
 let cachedData = null;
 
-// cмена этажей
+const dailyRoutine = [
+    { start: "07:00", end: "08:00", name: "Завтрак", type: "ev-food", target: "all" },
+    { start: "08:00", end: "08:20", name: "Чтение", type: "ev-book", target: "all" },
+    { start: "08:30", end: "09:10", name: "1 Урок", type: "ev-lesson", target: "all" },
+    { start: "09:20", end: "10:00", name: "2 Урок", type: "ev-lesson", target: "all" },
+    { start: "10:00", end: "10:30", name: "Перерыв", type: "ev-rest", target: "all" },
+    { start: "10:30", end: "11:10", name: "3 - Урок", type: "ev-lesson", target: "all" },
+    { start: "11:20", end: "12:00", name: "4 - Урок", type: "ev-lesson", target: "all" },
+    { start: "12:10", end: "12:50", name: "5 - Урок", type: "ev-lesson", target: "all" },
+
+    { start: "12:50", end: "13:30", name: "Обед", type: "ev-food", target: "junior" },
+    { start: "12:50", end: "13:30", name: "6 - Урок", type: "ev-lesson", target: "senior" },
+    { start: "13:40", end: "14:20", name: "6 - Урок", type: "ev-lesson", target: "junior" },
+    { start: "13:40", end: "14:20", name: "Обед", type: "ev-food", target: "senior" },
+    
+    { start: "14:30", end: "15:10", name: "7 - Урок", type: "ev-lesson", target: "all" },
+    { start: "15:20", end: "16:00", name: "8 - Урок", type: "ev-lesson", target: "all" },
+    { start: "16:00", end: "16:15", name: "Перерыв", type: "ev-rest", target: "all" },
+    { start: "16:15", end: "18:00", name: "Чалка", type: "ev-extra", target: "all" },
+    { start: "18:00", end: "19:00", name: "Ужин", type: "ev-food", target: "all" },
+    { start: "19:00", end: "19:40", name: "Этюд - 1", type: "ev-prep", target: "all" },
+    { start: "19:50", end: "20:30", name: "Этюд - 2", type: "ev-prep", target: "all" },
+    { start: "20:30", end: "20:50", name: "Полдник", type: "ev-food", target: "all" },
+    { start: "20:50", end: "22:30", name: "Свободное время", type: "ev-rest", target: "all" },
+    { start: "22:30", end: "23:59", name: "Отбой", type: "ev-sleep", target: "all" }
+];
+
+// cмена секций
 function switchSection(sectionId, element) {
     document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
     document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.remove('active'));
     document.getElementById(sectionId).classList.add('active');
     if (element) element.classList.add('active');
+    
+    if (sectionId === 'events-nav') {
+        updateTimeline();
+    }
 }
 
+// смена этажей
 function switchFloor(floorNumber) {
     document.querySelectorAll('.map-floor').forEach(f => f.classList.remove('active'));
     document.querySelectorAll('.floor-btn').forEach(b => b.classList.remove('active'));
@@ -29,6 +61,123 @@ function isCurrentSlot(startTimeStr, endTimeStr, targetDay) {
     const nowTotal = now.getHours() * 60 + now.getMinutes();
 
     return nowTotal >= startTotal && nowTotal <= endTotal;
+}
+
+// Перевод времени в минуты от начала дня (07:00) для расчета ширины блоков дорожной карты
+function timeToMinutes(timeStr) {
+    const [h, m] = timeStr.split(':').map(Number);
+    return h * 60 + m;
+}
+
+// Главная функция обновления таймлайна и маркерной линии "Сейчас"
+function updateTimeline() {
+    const clockEl = document.getElementById('timeline-clock');
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const timeString = `${hours}:${minutes}`;
+    
+    if (clockEl) clockEl.innerText = `Текущее время: ${timeString}`;
+
+    const startDayMin = timeToMinutes("07:00");
+    const endDayMin = timeToMinutes("22:30");
+    const currentMin = timeToMinutes(timeString);
+    const lineEl = document.getElementById('timeline-now-line');
+
+    if (currentMin >= startDayMin && currentMin <= endDayMin && lineEl) {
+        const totalRange = endDayMin - startDayMin;
+        const currentOffset = currentMin - startDayMin;
+        const percent = (currentOffset / totalRange) * 100;
+        lineEl.style.left = `calc(80px + ${percent}%)`;
+        lineEl.style.display = 'block';
+    } else if (lineEl) {
+        lineEl.style.display = 'none';
+    }
+
+    renderTimelineRow('timeline-junior', 'junior');
+    renderTimelineRow('timeline-senior', 'senior');
+    
+    renderEventCards(timeString);
+}
+
+function renderTimelineRow(containerId, targetGroup) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = '';
+
+    const startDayMin = timeToMinutes("07:00");
+    const endDayMin = timeToMinutes("22:30");
+    const totalRange = endDayMin - startDayMin;
+
+    dailyRoutine.forEach(event => {
+        if (event.target !== 'all' && event.target !== targetGroup) return;
+        if (timeToMinutes(event.start) >= endDayMin) return; // Отрезаем всё что после 22:30 для ровного таймлайна
+
+        const startMin = Math.max(timeToMinutes(event.start), startDayMin);
+        const endMin = Math.min(timeToMinutes(event.end), endDayMin);
+        
+        const leftPercent = ((startMin - startDayMin) / totalRange) * 100;
+        const widthPercent = ((endMin - startMin) / totalRange) * 100;
+
+        container.innerHTML += `
+            <div class="timeline-block ${event.type}" 
+                 style="left: ${leftPercent}%; width: ${widthPercent}%;" 
+                 title="${event.name} (${event.start}-${event.end})">
+                 ${event.name.split(' / ')[0]}
+            </div>`;
+    });
+}
+
+function renderEventCards(currentTimeStr) {
+    const container = document.getElementById('events-cards-container');
+    if (!container) return;
+    container.innerHTML = '';
+
+    // Если в json вообще нет массива событий, пишем сообщение
+    if (!cachedData || !cachedData.events || cachedData.events.length === 0) {
+        container.innerHTML = `<div style="color: #64748b; font-style: italic; grid-column: 1/-1;">На сегодня дополнительных событий или мини-игр не запланировано.</div>`;
+        return;
+    }
+
+    const currentMin = timeToMinutes(currentTimeStr);
+
+    cachedData.events.forEach(event => {
+        const startMin = timeToMinutes(event.time_start);
+        const endMin = timeToMinutes(event.time_end);
+        
+        // Проверяем, идет ли событие прямо сейчас
+        const isActive = currentMin >= startMin && currentMin < endMin;
+
+        let targetText = "Все классы";
+        if (event.target === 'junior') targetText = "7-9 классы";
+        if (event.target === 'senior') targetText = "9-11 классы";
+
+        container.innerHTML += `
+            <div class="event-card ${isActive ? 'active-now' : ''}">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px;">
+                    <span class="time" style="color: #0284c7; font-size: 14px;">⏳ ${event.time_start} - ${event.time_end}</span>
+                    ${isActive ? '<span style="font-size:10px; background:#ef4444; color:white; padding:2px 6px; border-radius:10px; font-weight:bold; animation: pulse 1.5s infinite;">ИДЕТ СЕЙЧАС</span>' : ''}
+                </div>
+                <h4 style="font-size: 17px; margin-bottom: 6px; color: #0f172a;">${event.name}</h4>
+                <div style="font-size: 13px; color: #475569; margin-bottom: 8px;"><strong>📍 Место:</strong> ${event.location}</div>
+                <p style="font-size: 13px; color: #64748b; line-height: 1.4; margin-bottom: 10px;">${event.description || ''}</p>
+                <span class="target">Кому: ${targetText}</span>
+            </div>
+        `;
+    });
+}
+
+function getEventColor(type) {
+    switch(type) {
+        case 'ev-food': return '#f59e0b';
+        case 'ev-book': return '#8b5cf6';
+        case 'ev-lesson': return '#3b82f6';
+        case 'ev-rest': return '#10b981';
+        case 'ev-extra': return '#06b6d4';
+        case 'ev-prep': return '#64748b';
+        case 'ev-sleep': return '#1e1b4b';
+        default: return '#cbd5e1';
+    }
 }
 
 function renderSchedule(className) {
@@ -176,7 +325,10 @@ async function initApp() {
                 `;
             });
         }
-
+        
+        setInterval(updateTimeline, 60000);
+        updateTimeline();
+        
         // Карты клики
         document.querySelectorAll('.room').forEach(room => {
             room.addEventListener('click', () => {
