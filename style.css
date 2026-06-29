@@ -200,49 +200,66 @@ h1 {
 
 /* Класс для узких блоков (Чтение, Полдник, Перерывы и т.д.) */
 .timeline-block.narrow-slot {
-    font-size: 9px;
-    writing-mode: vertical-rl; /* Переворачиваем текст вертикально */
-    transform: rotate(180deg); /* Корректируем направление чтения снизу вверх */
-    line-height: 1;
-    padding: 2px 0;
+    font-size: 10px !important;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    line-height: 1.1;
+    padding: 4px 0 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
+/* ОБНОВЛЕННАЯ СЕКЦИЯ ДЛЯ ЛИНИИ МЕРОПРИЯТИЙ */
 .dynamic-events-timeline {
     position: relative;
-    margin-top: 25px;
-    background: #f1f5f9;
-    border-radius: 8px;
-    padding: 20px 0;
+    margin-top: 30px;
+    background: #f8fafc;
+    border-radius: 10px;
+    padding: 20px 15px;
     min-width: 800px;
-    border: 1px dashed #cbd5e1;
+    border: 2px dashed #cbd5e1;
 }
 
 .dynamic-events-title {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: bold;
     color: #475569;
     text-transform: uppercase;
-    padding-left: 15px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    letter-spacing: 0.5px;
 }
 
+/* Контейнер треков мероприятий */
 .events-line-container {
     position: relative;
-    height: 30px;
-    margin-left: 80px; /* Выравнивание по сетке с верхними рядами */
-    background: #e2e8f0;
-    border-radius: 4px;
+    margin-left: 80px; /* Выравнивание с сеткой параллелей */
+    background: #f1f5f9;
+    border-radius: 6px;
+    min-height: 60px; /* Начальная высота для одного-двух треков */
+    padding: 5px 0;
 }
 
+/* Строка (уровень) для непересекающихся событий */
+.events-track-row {
+    position: relative;
+    width: 100%;
+    height: 32px; /* Фиксированная высота одного уровня */
+    margin-bottom: 5px;
+}
+.events-track-row:last-child {
+    margin-bottom: 0;
+}
+
+/* Отрезок конкретного мероприятия */
 .event-segment {
     position: absolute;
-    height: 70%;
-    top: 15%;
+    height: 100%;
     background: #0284c7;
     color: white;
-    border-radius: 4px;
-    font-size: 10px;
-    font-weight: bold;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -250,7 +267,14 @@ h1 {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    padding: 0 5px;
+    padding: 0 8px;
+    transition: transform 0.2s;
+    border: 1px solid #0369a1;
+}
+.event-segment:hover {
+    transform: scale(1.02);
+    z-index: 5;
+    background: #0369a1;
 }
 .timeline-block:hover {
     opacity: 0.9;
