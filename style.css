@@ -252,6 +252,7 @@ h1 {
 }
 
 /* Отрезок конкретного мероприятия */
+/* Отрезок конкретного мероприятия */
 .event-segment {
     position: absolute;
     height: 100%;
@@ -264,18 +265,49 @@ h1 {
     align-items: center;
     justify-content: center;
     box-shadow: 0 2px 4px rgba(2, 132, 199, 0.2);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    padding: 0 8px;
-    transition: transform 0.2s;
+    overflow: hidden; /* Обрезает всё, что не влезает */
+    text-overflow: ellipsis; /* Добавляет троеточие, если текст чуть длиннее */
+    white-space: nowrap; /* Запрещает перенос строки внутри плашки */
+    padding: 0 6px;
+    transition: all 0.2s;
     border: 1px solid #0369a1;
+    cursor: pointer;
 }
+
 .event-segment:hover {
-    transform: scale(1.02);
-    z-index: 5;
+    transform: scale(1.01);
+    z-index: 10;
     background: #0369a1;
 }
+
+/* Кастомная всплывающая подсказка при наведении */
+.event-segment[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%) scale(0.9);
+    background: #0f172a;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: normal;
+    white-space: pre-line; /* Позволяет делать переносы строк в подсказке */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.15s ease-in-out;
+    width: max-content;
+    max-width: 250px;
+    z-index: 999;
+}
+
+.event-segment[data-tooltip]:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+}
+
 .timeline-block:hover {
     opacity: 0.9;
 }
