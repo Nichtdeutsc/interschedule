@@ -143,7 +143,7 @@ function renderDynamicEventsLine() {
     container.innerHTML = '';
 
     if (!cachedData || !cachedData.events || cachedData.events.length === 0) {
-        container.innerHTML = `<div style="padding: 10px 15px; color: #94a3b8; font-size: 13px; font-style: italic;">На сегодня мероприятий не запланировано.</div>`;
+        container.innerHTML = `<div style="padding: 10px 15px; color: #94a3b8; font-size: 13px; font-style: italic;">На сегодня дополнительных мероприятий не запланировано.</div>`;
         return;
     }
 
@@ -151,22 +151,18 @@ function renderDynamicEventsLine() {
     const endDayMin = timeToMinutes("22:30");
     const totalRange = endDayMin - startDayMin;
 
-    // Массив уровней (треков). Каждый уровень хранит занятые промежутки времени [start, end]
     const rows = [];
 
     cachedData.events.forEach(event => {
         const startMin = timeToMinutes(event.time_start);
         const endMin = timeToMinutes(event.time_end);
 
-        // Игнорируем события вне рамок нашей временной шкалы
         if (startMin >= endDayMin || endMin <= startDayMin) return;
 
-        // Ищем первый уровень, где время этого события свободно
         let targetRowIndex = -1;
         for (let i = 0; i < rows.length; i++) {
             let hasOverlap = false;
             for (let slot of rows[i]) {
-                // Если интервалы пересекаются
                 if (startMin < slot.end && endMin > slot.start) {
                     hasOverlap = true;
                     break;
@@ -178,20 +174,16 @@ function renderDynamicEventsLine() {
             }
         }
 
-        // Если свободного уровня не нашлось, создаем новый снизу
         if (targetRowIndex === -1) {
             rows.push([]);
             targetRowIndex = rows.length - 1;
         }
 
-        // Занимаем время на выбранном уровне
         rows[targetRowIndex].push({ start: startMin, end: endMin });
 
-        // Рассчитываем координаты в процентах
         const leftPercent = ((Math.max(startMin, startDayMin) - startDayMin) / totalRange) * 100;
         const widthPercent = ((Math.min(endMin, endDayMin) - Math.max(startMin, startDayMin)) / totalRange) * 100;
 
-        // Создаем DOM-элемент уровня, если его еще нет на странице
         let rowEl = document.getElementById(`events-track-${targetRowIndex}`);
         if (!rowEl) {
             rowEl = document.createElement('div');
@@ -200,12 +192,16 @@ function renderDynamicEventsLine() {
             container.appendChild(rowEl);
         }
 
-        // Вставляем отрезок на свой уровень
+        const tooltipText = `${event.name}\n⏳ Время: ${event.time_start} - ${event.time_end}\n📍 Место: ${event.location}`;
+
+        // Если ширина плашки меньше 12% от всей шкалы (~ меньше полутора часов), скрыть текст
+        const displayContent = widthPercent < 12 ? 'событие' : event.name;
+
         rowEl.innerHTML += `
             <div class="event-segment" 
                  style="left: ${leftPercent}%; width: ${widthPercent}%;" 
-                 title="${event.name} (${event.time_start} - ${event.time_end})\nМесто: ${event.location}">
-                ${event.name}
+                 data-tooltip="${tooltipText}">
+                ${displayContent}
             </div>
         `;
     });
