@@ -150,7 +150,6 @@ function renderDynamicEventsLine() {
     const startDayMin = timeToMinutes("07:00");
     const endDayMin = timeToMinutes("22:30");
     const totalRange = endDayMin - startDayMin;
-
     const rows = [];
 
     cachedData.events.forEach(event => {
@@ -192,10 +191,11 @@ function renderDynamicEventsLine() {
             container.appendChild(rowEl);
         }
 
+        // Формируем текст подсказки с переносами строк (\n)
         const tooltipText = `${event.name}\n⏳ Время: ${event.time_start} - ${event.time_end}\n📍 Место: ${event.location}`;
-
-        // Если ширина плашки меньше 12% от всей шкалы (~ меньше полутора часов), скрыть текст
-        const displayContent = widthPercent < 12 ? 'Событие' : event.name;
+        
+        // Если ширина плашки меньше 12% (~ полтора часа), прячем текст, чтобы не вылезал
+        const displayContent = widthPercent < 12 ? '⚡' : event.name;
 
         rowEl.innerHTML += `
             <div class="event-segment" 
