@@ -195,7 +195,7 @@ function renderDynamicEventsLine() {
         const tooltipText = `${event.name}\n⏳ Время: ${event.time_start} - ${event.time_end}\n📍 Место: ${event.location}`;
 
         // Если ширина плашки меньше 12% от всей шкалы (~ меньше полутора часов), скрыть текст
-        const displayContent = widthPercent < 12 ? 'событие' : event.name;
+        const displayContent = widthPercent < 12 ? 'Событие' : event.name;
 
         rowEl.innerHTML += `
             <div class="event-segment" 
