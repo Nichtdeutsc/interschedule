@@ -116,12 +116,16 @@ function updateTimeline() {
 function renderTimelineRow(containerId, targetGroup) {
     const container = document.getElementById(containerId);
     if (!container) return;
-    container.innerHTML = '';
+
+    // Вместо полной очистки innerHTML, удаляем только старые блоки уроков (.timeline-block)
+    const oldBlocks = container.querySelectorAll('.timeline-block');
+    oldBlocks.forEach(block => block.remove());
 
     const startDayMin = timeToMinutes("07:00");
     const endDayMin = timeToMinutes("22:30");
     const totalRange = endDayMin - startDayMin;
 
+    let blocksHtml = '';
     dailyRoutine.forEach(event => {
         if (event.target !== 'all' && event.target !== targetGroup) return;
         if (timeToMinutes(event.start) >= endDayMin) return;
@@ -135,13 +139,15 @@ function renderTimelineRow(containerId, targetGroup) {
 
         const isNarrow = duration <= 30 ? 'narrow-slot' : '';
 
-        container.innerHTML += `
+        blocksHtml += `
             <div class="timeline-block ${event.type} ${isNarrow}" 
                  style="left: ${leftPercent}%; width: ${widthPercent}%;" 
                  title="${event.name} (${event.start}-${event.end})">
                  ${event.name.split(' / ')[0]}
             </div>`;
     });
+
+    container.insertAdjacentHTML('beforeend', blocksHtml);
 }
 
 function renderTimelineHours() {
