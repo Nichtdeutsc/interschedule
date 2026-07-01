@@ -147,7 +147,7 @@ function renderTimelineHours() {
         const percent = ((currentMin - startDayMin) / totalRange) * 100;
         
         // Позиционируем каждую метку абсолютно в зависимости от её реального процента дня
-        hoursHtml += `<span style="left: ${percent}%; transform: translateX(-50%);">${timeStr}</span>`;
+        hoursHtml += `<span style="left: ${percent}%;">${timeStr}</span>`;
     });
     
     hoursContainer.innerHTML = hoursHtml;
