@@ -344,16 +344,19 @@ h1 {
 }
 
 .timeline-hours {
-    display: flex;
-    justify-content: space-between;
-    padding-left: 80px;
+    position: relative;
+    margin-left: 80px; /* Идентичный отступ как у контейнера баров */
     margin-top: 10px;
-    font-size: 12px;
+    height: 20px;
     color: #64748b;
+    font-size: 12px;
     font-weight: 500;
-    min-width: 800px;
+    min-width: 720px; /* Соответствие минимальной ширине сетки */
 }
-
+.timeline-hours span {
+    position: absolute;
+    white-space: nowrap;
+}
 /* Сетка карточек под таймлайном */
 .events-grid {
     display: grid;
