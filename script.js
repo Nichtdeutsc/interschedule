@@ -191,17 +191,20 @@ function renderDynamicEventsLine() {
             container.appendChild(rowEl);
         }
 
-        // Формируем текст подсказки с переносами строк (\n)
+        // Формируем чистый текст подсказки (символ \n перенесет строчку благодаря white-space: pre в CSS)
         const tooltipText = `${event.name}\n⏳ Время: ${event.time_start} - ${event.time_end}\n📍 Место: ${event.location}`;
         
-        // Если ширина плашки меньше 12% (~ полтора часа), прячем текст, чтобы не вылезал
+        // Если плашка узкая (меньше 12%), ставим молнию
         const displayContent = widthPercent < 12 ? '⚡' : event.name;
 
+        // Обернули внутренний текст в span со стилем обрезки текста, чтобы сам .event-segment не имел overflow:hidden
         rowEl.innerHTML += `
             <div class="event-segment" 
                  style="left: ${leftPercent}%; width: ${widthPercent}%;" 
                  data-tooltip="${tooltipText}">
-                ${displayContent}
+                <span style="max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block;">
+                    ${displayContent}
+                </span>
             </div>
         `;
     });
