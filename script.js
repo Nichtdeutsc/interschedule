@@ -17,10 +17,10 @@ const dailyRoutine = [
     
     { start: "14:30", end: "15:10", name: "7 - Урок", type: "ev-lesson", target: "all" },
     { start: "15:20", end: "16:00", name: "8 - Урок", type: "ev-lesson", target: "all" },
-    { start: "16:15", end: "18:00", name: "Чалка", type: "ev-extra", target: "all" },
+    { start: "16:15", end: "18:00", name: "Чалка", type: "ev-rest", target: "all" },
     { start: "18:00", end: "19:00", name: "Ужин", type: "ev-food", target: "all" },
-    { start: "19:00", end: "19:40", name: "Этюд - 1", type: "ev-prep", target: "all" },
-    { start: "19:50", end: "20:30", name: "Этюд - 2", type: "ev-prep", target: "all" },
+    { start: "19:00", end: "19:40", name: "Этюд - 1", type: "ev-etud", target: "all" },
+    { start: "19:50", end: "20:30", name: "Этюд - 2", type: "ev-etud", target: "all" },
     { start: "20:30", end: "20:50", name: "Поздник", type: "ev-food", target: "all" },
     { start: "22:30", end: "23:59", name: "Отбой", type: "ev-sleep", target: "all" }
 ];
@@ -82,12 +82,12 @@ function updateTimeline() {
     const currentMin = timeToMinutes(timeString);
     const lineEl = document.getElementById('timeline-now-line');
 
-    // Корректный расчет положения красной линии (выравнивание ровно на 80px лейбла параллели)
     if (currentMin >= startDayMin && currentMin <= endDayMin && lineEl) {
         const totalRange = endDayMin - startDayMin;
         const currentOffset = currentMin - startDayMin;
         const percent = (currentOffset / totalRange) * 100;
-        lineEl.style.left = `${percent}%`;
+
+        lineEl.style.left = `calc(80px + ${percent}%)`; 
         lineEl.style.display = 'block';
     }
     else if (lineEl) lineEl.style.display = 'none';
