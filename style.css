@@ -454,8 +454,8 @@ h1 {
 .timeline-hours {
     position: relative;
     margin-top: 15px;
-    margin-left: 80px;
-    width: calc(100% - 100px);
+    margin-left: 90px;
+    margin-right: 10px;
     height: 20px;
     color: #64748b;
     font-size: 12px;
@@ -465,6 +465,7 @@ h1 {
 .timeline-hours span {
     position: absolute;
     white-space: nowrap;
+    transform: translateX(-50%);
 }
 
 
