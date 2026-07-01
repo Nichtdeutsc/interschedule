@@ -87,11 +87,10 @@ function updateTimeline() {
         const totalRange = endDayMin - startDayMin;
         const currentOffset = currentMin - startDayMin;
         const percent = (currentOffset / totalRange) * 100;
-        lineEl.style.left = `calc(80px + ${percent}%)`; 
+        lineEl.style.left = `${percent}%`;
         lineEl.style.display = 'block';
-    } else if (lineEl) {
-        lineEl.style.display = 'none';
     }
+    else if (lineEl) lineEl.style.display = 'none';
 
     renderTimelineRow('timeline-junior', 'junior');
     renderTimelineRow('timeline-senior', 'senior');
@@ -288,7 +287,8 @@ function renderSchedule(className) {
         let rowHtml = `<tr>`;
         if (slotInfo.slot === 0) {
             rowHtml += `<td><strong>Обед</strong><br><small style="color:#64748b">${slotInfo.start} - ${slotInfo.end}</small></td>`;
-        } else {
+        }
+        else {
             rowHtml += `<td><strong>${slotInfo.slot} урок</strong><br><small style="color:#64748b">${slotInfo.start} - ${slotInfo.end}</small></td>`;
         }
         
@@ -298,7 +298,8 @@ function renderSchedule(className) {
 
             if (slotInfo.slot === 0) {
                 rowHtml += `<td class="lunch-row ${cellClass}">Түскі ас / Обед ${isNow ? '<br><span class="now-badge">ИДЕТ СЕЙЧАС</span>' : ''}</td>`;
-            } else {
+            }
+            else {
                 const lessons = cachedData.schedule.filter(s => s.slot === slotInfo.slot && s.day === day && s.class_name === className);
                 rowHtml += `<td class="${cellClass}">`;
                 if (lessons.length > 0) {
@@ -315,9 +316,8 @@ function renderSchedule(className) {
                         `;
                     });
                     if (isNow) rowHtml += `<span class="now-badge">ИДЕТ СЕЙЧАС</span>`;
-                } else {
-                    rowHtml += `<span style="color:#cbd5e1">—</span>`;
                 }
+                else rowHtml += `<span style="color:#cbd5e1">—</span>`;
                 rowHtml += `</td>`;
             }
         });
