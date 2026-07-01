@@ -82,26 +82,23 @@ function updateTimeline() {
     const currentMin = timeToMinutes(timeString);
     const lineEl = document.getElementById('timeline-now-line');
 
-    // Позиционирование красной линии "Сейчас"
+    // Корректный расчет положения красной линии (выравнивание ровно на 80px лейбла параллели)
     if (currentMin >= startDayMin && currentMin <= endDayMin && lineEl) {
         const totalRange = endDayMin - startDayMin;
         const currentOffset = currentMin - startDayMin;
         const percent = (currentOffset / totalRange) * 100;
-        lineEl.style.left = `calc(80px + ${percent}%)`; // 80px — отступ лейбла параллели
+        lineEl.style.left = `calc(80px + ${percent}%)`; 
         lineEl.style.display = 'block';
     } else if (lineEl) {
         lineEl.style.display = 'none';
     }
 
-    // Рендерим базовые строки параллелей
     renderTimelineRow('timeline-junior', 'junior');
     renderTimelineRow('timeline-senior', 'senior');
-    
-    // Рендерим многоуровневую шкалу дополнительных мероприятий
     renderDynamicEventsLine();
-    
-    // Рендерим карточки внизу
     renderEventCards(timeString);
+    
+    renderTimelineHours();
 }
 
 function renderTimelineRow(containerId, targetGroup) {
@@ -124,7 +121,6 @@ function renderTimelineRow(containerId, targetGroup) {
         const leftPercent = ((startMin - startDayMin) / totalRange) * 100;
         const widthPercent = (duration / totalRange) * 100;
 
-        // Если блок меньше или равен 30 минутам (чтение, полдник, перерывы), переворачиваем текст
         const isNarrow = duration <= 30 ? 'narrow-slot' : '';
 
         container.innerHTML += `
@@ -136,6 +132,27 @@ function renderTimelineRow(containerId, targetGroup) {
     });
 }
 
+function renderTimelineHours() {
+    const hoursContainer = document.querySelector('.timeline-hours');
+    if (!hoursContainer) return;
+    
+    const targetHours = ["07:00", "09:00", "11:00", "13:00", "15:00", "17:00", "19:00", "21:00", "22:30"];
+    
+    const startDayMin = timeToMinutes("07:00");
+    const endDayMin = timeToMinutes("22:30");
+    const totalRange = endDayMin - startDayMin;
+    
+    let hoursHtml = '';
+    targetHours.forEach(timeStr => {
+        const currentMin = timeToMinutes(timeStr);
+        const percent = ((currentMin - startDayMin) / totalRange) * 100;
+        
+        // Позиционируем каждую метку абсолютно в зависимости от её реального процента дня
+        hoursHtml += `<span style="left: ${percent}%; transform: translateX(-50%);">${timeStr}</span>`;
+    });
+    
+    hoursContainer.innerHTML = hoursHtml;
+}
 // Умная функция рендеринга мероприятий без перекрытий (по уровням/трекам)
 function renderDynamicEventsLine() {
     const container = document.getElementById('dynamic-events-line-row');
