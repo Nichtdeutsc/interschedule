@@ -80,17 +80,30 @@ function updateTimeline() {
     const startDayMin = timeToMinutes("07:00");
     const endDayMin = timeToMinutes("22:30");
     const currentMin = timeToMinutes(timeString);
-    const lineEl = document.getElementById('timeline-now-line');
 
-    if (currentMin >= startDayMin && currentMin <= endDayMin && lineEl) {
+    const lines = [
+        document.getElementById('timeline-now-line-junior'),
+        document.getElementById('timeline-now-line-senior'),
+        document.getElementById('timeline-now-line-events')
+    ];
+
+    if (currentMin >= startDayMin && currentMin <= endDayMin) {
         const totalRange = endDayMin - startDayMin;
         const currentOffset = currentMin - startDayMin;
         const percent = (currentOffset / totalRange) * 100;
-
-        lineEl.style.left = `calc(80px + ${percent}%)`; 
-        lineEl.style.display = 'block';
+        
+        lines.forEach(line => {
+            if (line) {
+                line.style.left = `${percent}%`;
+                line.style.display = 'block';
+            }
+        });
     }
-    else if (lineEl) lineEl.style.display = 'none';
+    else {
+        lines.forEach(line => {
+            if (line) line.style.display = 'none';
+        });
+    }
 
     renderTimelineRow('timeline-junior', 'junior');
     renderTimelineRow('timeline-senior', 'senior');
