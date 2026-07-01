@@ -439,7 +439,7 @@ h1 {
 
 .now-pointer {
     position: absolute;
-    top: -24px;
+    top: -28px;
     left: 50%;
     transform: translateX(-50%);
     background: #ef4444;
@@ -449,7 +449,7 @@ h1 {
     padding: 2px 6px;
     border-radius: 4px;
     white-space: nowrap;
-    z-index: 501;
+    z-index: 99999;
 }
 
 /* АВТОМАТИЧЕСКАЯ ШКАЛА ЧАСОВ СНИЗУ */
