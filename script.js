@@ -80,36 +80,25 @@ function updateTimeline() {
     const startDayMin = timeToMinutes("07:00");
     const endDayMin = timeToMinutes("22:30");
     const currentMin = timeToMinutes(timeString);
+    const container = document.querySelector('.timeline-container');
 
-    const lines = [
-        document.getElementById('timeline-now-line-junior'),
-        document.getElementById('timeline-now-line-senior'),
-        document.getElementById('timeline-now-line-events')
-    ];
-
-    if (currentMin >= startDayMin && currentMin <= endDayMin) {
-        const totalRange = endDayMin - startDayMin;
-        const currentOffset = currentMin - startDayMin;
-        const percent = (currentOffset / totalRange) * 100;
-        
-        lines.forEach(line => {
-            if (line) {
-                line.style.left = `${percent}%`;
-                line.style.display = 'block';
-            }
-        });
-    }
-    else {
-        lines.forEach(line => {
-            if (line) line.style.display = 'none';
-        });
+    if (container) {
+        if (currentMin >= startDayMin && currentMin <= endDayMin) {
+            const totalRange = endDayMin - startDayMin;
+            const currentOffset = currentMin - startDayMin;
+            const percent = (currentOffset / totalRange) * 100;
+            
+            // Передаем точный процент времени прямо в CSS!
+            container.style.setProperty('--now-percent', `${percent}%`);
+            container.classList.add('show-now-line');
+        }
+        else container.classList.remove('show-now-line');
     }
 
     renderTimelineRow('timeline-junior', 'junior');
     renderTimelineRow('timeline-senior', 'senior');
     renderDynamicEventsLine();
     renderEventCards(timeString);
-    
     renderTimelineHours();
 }
 
@@ -393,7 +382,6 @@ async function initApp() {
                 }
             });
         });
-
         // статус учителей
         cachedData.teachers.forEach(teacher => {
             const isMale = teacher.geschlecht === 'м';
