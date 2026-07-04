@@ -431,7 +431,7 @@ h1 {
     position: absolute;
     top: 0;
     bottom: 25px;
-    left: calc(90px + (var(--now-percent) * (100% - 100px) / 100));
+    left: calc(90px + var(--now-percent));
     width: 2px;
     background: #ef4444;
     z-index: 99999 !important;
