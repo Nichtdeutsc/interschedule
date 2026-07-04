@@ -426,21 +426,19 @@ h1 {
 }
 
 /* ВЕРТИКАЛЬНАЯ ЛИНИЯ "СЕЙЧАС" */
-.timeline-container.show-now-line::after {
+.timeline-blocks::after {
     content: '';
     position: absolute;
-    top: 0;
-    bottom: 25px;
+    top: -12px;
+    bottom: -12px;
+    left: var(--now-percent);
     width: 2px;
-    background: #ef4444;
-    z-index: 99999 !important;
-    pointer-events: none;
+    background: red;
 }
 
 .now-pointer {
     position: absolute;
     top: -24px;
-    left: 0;
     transform: translateX(-50%);
     background: #ef4444;
     color: white;
