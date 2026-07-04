@@ -431,7 +431,6 @@ h1 {
     position: absolute;
     top: 0;
     bottom: 25px;
-    left: calc(90px + var(--now-percent));
     width: 2px;
     background: #ef4444;
     z-index: 99999 !important;
@@ -440,8 +439,8 @@ h1 {
 
 .now-pointer {
     position: absolute;
-    top: -28px;
-    left: 50%;
+    top: -24px;
+    left: 0;
     transform: translateX(-50%);
     background: #ef4444;
     color: white;
