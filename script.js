@@ -88,7 +88,7 @@ function updateTimeline() {
             const currentOffset = currentMin - startDayMin;
             const percent = (currentOffset / totalRange) * 100;
             
-            container.style.setProperty('--now-percent', `${percent}%`);
+            blocks.style.setProperty('--now-percent', `${percent}%`);
             container.classList.add('show-now-line');
         }
         else container.classList.remove('show-now-line');
