@@ -88,7 +88,6 @@ function updateTimeline() {
             const currentOffset = currentMin - startDayMin;
             const percent = (currentOffset / totalRange) * 100;
             
-            // Передаем точный процент времени прямо в CSS!
             container.style.setProperty('--now-percent', `${percent}%`);
             container.classList.add('show-now-line');
         }
