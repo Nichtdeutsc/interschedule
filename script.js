@@ -88,7 +88,12 @@ function updateTimeline() {
             const currentOffset = currentMin - startDayMin;
             const percent = (currentOffset / totalRange) * 100;
             
-            blocks.style.setProperty('--now-percent', `${percent}%`);
+            document.querySelectorAll('.timeline-blocks').forEach(track => {
+                track.style.setProperty('--now-percent', `${percent}%`);
+            });
+
+            const nowPointer = container.querySelector('.now-pointer');
+            if (nowPointer) nowPointer.style.left = `${percent}%`;
             container.classList.add('show-now-line');
         }
         else container.classList.remove('show-now-line');
@@ -100,7 +105,6 @@ function updateTimeline() {
     renderEventCards(timeString);
     renderTimelineHours();
 }
-
 function renderTimelineRow(containerId, targetGroup) {
     const container = document.getElementById(containerId);
     if (!container) return;
