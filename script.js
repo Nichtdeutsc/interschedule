@@ -32,9 +32,7 @@ function switchSection(sectionId, element) {
     document.getElementById(sectionId).classList.add('active');
     if (element) element.classList.add('active');
     
-    if (sectionId === 'events-nav') {
-        updateTimeline();
-    }
+    if (sectionId === 'events-nav') updateTimeline();
 }
 
 // смена этажей
@@ -131,7 +129,6 @@ function renderTimelineRow(containerId, targetGroup) {
 
         const isNarrow = duration <= 30 ? 'narrow-slot' : '';
 
-        // Добавим в инлайн-стиль top: 0;, чтобы блоки железно сидели вверху своей дорожки
         blocksHtml += `
             <div class="timeline-block ${event.type} ${isNarrow}" 
                  style="left: ${leftPercent}%; width: ${widthPercent}%; top: 0;" 
@@ -297,20 +294,14 @@ function renderSchedule(className) {
 
     cachedData.time_slots.forEach(slotInfo => {
         let rowHtml = `<tr>`;
-        if (slotInfo.slot === 0) {
-            rowHtml += `<td><strong>Обед</strong><br><small style="color:#64748b">${slotInfo.start} - ${slotInfo.end}</small></td>`;
-        }
-        else {
-            rowHtml += `<td><strong>${slotInfo.slot} урок</strong><br><small style="color:#64748b">${slotInfo.start} - ${slotInfo.end}</small></td>`;
-        }
+        if (slotInfo.slot === 0) rowHtml += `<td><strong>Обед</strong><br><small style="color:#64748b">${slotInfo.start} - ${slotInfo.end}</small></td>`;
+        else rowHtml += `<td><strong>${slotInfo.slot} урок</strong><br><small style="color:#64748b">${slotInfo.start} - ${slotInfo.end}</small></td>`;
         
         days.forEach(day => {
             const isNow = isCurrentSlot(slotInfo.start, slotInfo.end, day);
             let cellClass = isNow ? 'current-lesson-row' : '';
 
-            if (slotInfo.slot === 0) {
-                rowHtml += `<td class="lunch-row ${cellClass}">Түскі ас / Обед ${isNow ? '<br><span class="now-badge">ИДЕТ СЕЙЧАС</span>' : ''}</td>`;
-            }
+            if (slotInfo.slot === 0) rowHtml += `<td class="lunch-row ${cellClass}">Түскі ас / Обед ${isNow ? '<br><span class="now-badge">ИДЕТ СЕЙЧАС</span>' : ''}</td>`;
             else {
                 const lessons = cachedData.schedule.filter(s => s.slot === slotInfo.slot && s.day === day && s.class_name === className);
                 rowHtml += `<td class="${cellClass}">`;
@@ -472,7 +463,6 @@ async function initApp() {
                 }
             });
         });
-
     }
     catch (error) {
         console.error("Ошибка инициализации приложения: ", error);
