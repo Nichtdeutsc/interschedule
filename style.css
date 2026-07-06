@@ -15,7 +15,6 @@ body {
     color: #0f172a; 
     overflow: hidden; 
 }
-
 /* Элементы главного контента (кроме сайдбара) */
 #main-content { 
     flex-grow: 1; 
@@ -361,12 +360,9 @@ h1 {
 .timeline-row {
     display: flex;
     align-items: center;
-    margin-bottom: 15px;
-    background: #f8fafc;
-    border-radius: 8px;
-    padding: 8px 10px;
-    border: 1px solid #e2e8f0;
     position: relative;
+    height: 45px;
+    margin-bottom: 15px;
 }
 
 /* Название классов слева от полосы */
@@ -378,31 +374,22 @@ h1 {
     color: #334155;
     font-size: 14px;
 }
-
 /* Серый трек внутри строки, где рендерятся уроки */
 .timeline-blocks {
     position: relative;
     flex-grow: 1;
-    height: 45px;
-    background: #e2e8f0;
+    height: 100%;
+    background: #f1f5f9;
     border-radius: 6px;
 }
-
-/* Индивидуальный блок события (Завтрак, Урок и т.д.) */
 .timeline-block {
     position: absolute;
+    top: 0;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 11px;
-    font-weight: 600;
-    color: white;
-    text-align: center;
-    padding: 0 4px;
-    cursor: pointer;
-    transition: opacity 0.2s;
-    z-index: 1;
+    box-sizing: border-box;
 }
 .timeline-block:hover { opacity: 0.9; }
 
@@ -415,7 +402,6 @@ h1 {
 .ev-etud   { background: #64748b; } /* Этюд */
 .ev-sleep  { background: #14b8a6; } /* Отбой */
 
-/* КЛАСС ДЛЯ ПЕРЕВЕРНУТОГО ТЕКСТА (Если блок меньше 30 минут) */
 .timeline-block.narrow-slot {
     font-size: 10px !important;
     writing-mode: vertical-rl !important;
@@ -613,9 +599,7 @@ h1 {
         box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
     }
     
-    #sidebar h2, .sidebar-version { 
-        display: none !important; 
-    }
+    #sidebar h2, .sidebar-version {display: none !important; }
     
     .menu-btn { 
         width: auto !important; 
