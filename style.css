@@ -367,19 +367,19 @@ h1 {
 
 /* Название классов слева от полосы */
 .timeline-label {
-    position: absolute;
-    left: 10px;
-    width: 70px;
+    position: relative;
+    left: auto;
+    width: 55px;
     font-weight: bold;
-    color: #334155;
+    text-align: center;
+    color: #334155; /* grey */
     font-size: 14px;
 }
-/* Серый трек внутри строки, где рендерятся уроки */
 .timeline-blocks {
     position: relative;
     flex-grow: 1;
     height: 100%;
-    background: #f1f5f9;
+    background: #e2e8f0; /* light grey */
     border-radius: 6px;
 }
 .timeline-block {
@@ -389,7 +389,10 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center;
-    box-sizing: border-box;
+    font-size: 12px;
+    color: white;
+    text-align: center;
+    box-sizing: border-box; /*гемини даже эти 10 строчек не осилил божеее */
 }
 .timeline-block:hover { opacity: 0.9; }
 
