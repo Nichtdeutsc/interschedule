@@ -105,11 +105,11 @@ function updateTimeline() {
     renderEventCards(timeString);
     renderTimelineHours();
 }
+
 function renderTimelineRow(containerId, targetGroup) {
     const container = document.getElementById(containerId);
     if (!container) return;
 
-    // Вместо полной очистки innerHTML, удаляем только старые блоки уроков (.timeline-block)
     const oldBlocks = container.querySelectorAll('.timeline-block');
     oldBlocks.forEach(block => block.remove());
 
@@ -131,9 +131,10 @@ function renderTimelineRow(containerId, targetGroup) {
 
         const isNarrow = duration <= 30 ? 'narrow-slot' : '';
 
+        // Добавим в инлайн-стиль top: 0;, чтобы блоки железно сидели вверху своей дорожки
         blocksHtml += `
             <div class="timeline-block ${event.type} ${isNarrow}" 
-                 style="left: ${leftPercent}%; width: ${widthPercent}%;" 
+                 style="left: ${leftPercent}%; width: ${widthPercent}%; top: 0;" 
                  title="${event.name} (${event.start}-${event.end})">
                  ${event.name.split(' / ')[0]}
             </div>`;
