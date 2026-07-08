@@ -249,21 +249,16 @@ function renderEventCards(currentTimeStr) {
         
         const isActive = currentMin >= startMin && currentMin < endMin;
 
-        // хзхз поменяю наверн
-        let targetText = "Все классы";
-        if (event.target === 'junior') targetText = "7-9 классы";
-        if (event.target === 'senior') targetText = "9-11 классы";
-
         container.innerHTML += `
             <div class="event-card ${isActive ? 'active-now' : ''}">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px;">
-                    <span class="time" style="color: #0284c7; font-size: 14px;">⏳ ${event.time_start} - ${event.time_end}</span>
+                    <span class="time" style="color: #0284c7; font-size: 14px;">${event.time_start} - ${event.time_end}</span>
                     ${isActive ? '<span style="font-size:10px; background:#ef4444; color:white; padding:2px 6px; border-radius:10px; font-weight:bold; animation: pulse 1.5s infinite;">ИДЕТ СЕЙЧАС</span>' : ''}
                 </div>
                 <h4 style="font-size: 17px; margin-bottom: 6px; color: #0f172a;">${event.name}</h4>
-                <div style="font-size: 13px; color: #475569; margin-bottom: 8px;"><strong>📍 Место:</strong> ${event.location}</div>
+                <div style="font-size: 13px; color: #475569; margin-bottom: 8px;"><strong>Место:</strong> ${event.location}</div>
                 <p style="font-size: 13px; color: #64748b; line-height: 1.4; margin-bottom: 10px;">${event.description || ''}</p>
-                <span class="target">Кому: ${targetText}</span>
+                <span class="target">Кому: ${event.target}</span>
             </div>
         `;
     });
