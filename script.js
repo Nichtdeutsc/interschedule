@@ -218,15 +218,13 @@ function renderDynamicEventsLine() {
         }
 
         const tooltipText = `${event.name}\nВремя: ${event.time_start} - ${event.time_end}\nМесто: ${event.location}`;
-        
-        const displayContent = widthPercent < 12 ? 'Событие' : event.name;
 
         rowEl.innerHTML += `
             <div class="event-segment" 
                  style="left: ${leftPercent}%; width: ${widthPercent}%;" 
                  data-tooltip="${tooltipText}">
                 <span style="max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block;">
-                    ${displayContent}
+                    ${event.shortname}
                 </span>
             </div>
         `;
