@@ -65,7 +65,7 @@ function timeToMinutes(timeStr) {
     return h * 60 + m;
 }
 
-// Главная функция обновления всей дорожной карты
+// обновление всей дорожной карты
 function updateTimeline() {
     const clockEl = document.getElementById('timeline-clock');
     const now = new Date();
@@ -140,6 +140,7 @@ function renderTimelineRow(containerId, targetGroup) {
     container.insertAdjacentHTML('beforeend', blocksHtml);
 }
 
+// таймлейблы снизу
 function renderTimelineHours() {
     const hoursContainer = document.querySelector('.timeline-hours');
     if (!hoursContainer) return;
@@ -216,13 +217,10 @@ function renderDynamicEventsLine() {
             container.appendChild(rowEl);
         }
 
-        // Формируем чистый текст подсказки (символ \n перенесет строчку благодаря white-space: pre в CSS)
-        const tooltipText = `${event.name}\n⏳ Время: ${event.time_start} - ${event.time_end}\n📍 Место: ${event.location}`;
+        const tooltipText = `${event.name}\nВремя: ${event.time_start} - ${event.time_end}\nМесто: ${event.location}`;
         
-        // Если плашка узкая (меньше 12%), ставим молнию
-        const displayContent = widthPercent < 12 ? '⚡' : event.name;
+        const displayContent = widthPercent < 12 ? 'Событие' : event.name;
 
-        // Обернули внутренний текст в span со стилем обрезки текста, чтобы сам .event-segment не имел overflow:hidden
         rowEl.innerHTML += `
             <div class="event-segment" 
                  style="left: ${leftPercent}%; width: ${widthPercent}%;" 
@@ -240,7 +238,6 @@ function renderEventCards(currentTimeStr) {
     if (!container) return;
     container.innerHTML = '';
 
-    // Если в json вообще нет массива событий, пишем сообщение
     if (!cachedData || !cachedData.events || cachedData.events.length === 0) {
         container.innerHTML = `<div style="color: #64748b; font-style: italic; grid-column: 1/-1;">На сегодня мероприятий не запланировано.</div>`;
         return;
@@ -252,9 +249,9 @@ function renderEventCards(currentTimeStr) {
         const startMin = timeToMinutes(event.time_start);
         const endMin = timeToMinutes(event.time_end);
         
-        // Проверяем, идет ли событие прямо сейчас
         const isActive = currentMin >= startMin && currentMin < endMin;
 
+        // хзхз поменяю наверн
         let targetText = "Все классы";
         if (event.target === 'junior') targetText = "7-9 классы";
         if (event.target === 'senior') targetText = "9-11 классы";
@@ -334,7 +331,6 @@ function handleClassChange() {
     renderSchedule(selectedClass);
 }
 
-// Показ детальной информации о классе
 function showClassDetails(className) {
     const targetClass = cachedData.classes.find(c => c.name === className);
     if (!targetClass) return;
@@ -361,7 +357,6 @@ async function initApp() {
 
         renderSchedule('8А');
 
-        // Отрисовка учителей
         const teachersContainer = document.getElementById('teachers-container');
         teachersContainer.innerHTML = '';
         const days = ['Пн', 'Вт', 'Ср'];
@@ -412,7 +407,7 @@ async function initApp() {
             `;
         });
 
-        // Отрисовка плашек классов
+        // отрисовка плашек классов
         const classesContainer = document.getElementById('classes-container');
         classesContainer.innerHTML = '';
         if (cachedData.classes) {
@@ -469,4 +464,4 @@ async function initApp() {
     }
 }
 
-initApp();
+initApp(); // самая важная строчка, без нее ниче не робит
